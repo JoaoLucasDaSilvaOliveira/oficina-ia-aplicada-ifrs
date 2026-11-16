@@ -1,0 +1,111 @@
+IDEIAS PALESTRA/OFICINA: ALÉM DO VIBECODING
+
+[ABERTURA]
+- Me apresento, com meu linkeding e github aberto.
+"Boa noite a todos, me chamo João Lucas, sou aluno do Superior ADS, sexto semestre. Atuo como desenvolvedor independente mais focado em **desenvolvimento backend**. Atualmente trabalho com projetos próprios no estilo desse que desenvolveremos hoje. Basicamente meu trabalho gira entorno de ouvir o cliente, entender as suas dores e o seu negócio. Utilizo técnicas de engenharia de software para transformar esse depoimento do cliente em requisitos de sistema, e, posteriormente, em um sistema de fato."
+
+[PINCELA ASSUNTO PRINCIPAL]
+- Faz leve introdução linkando o assunto anterior.
+"Sempre atuei sozinho nos meus projetos, assim como a maioria daqui que já tenha tentado tocar algo, mas ultimamente ganhei um funcionário que é: mais rápido que eu e não reclama de nenhuma tarefa."
+
+[INTERAÇÃO COM O PÚBLICO]
+- Leve provocação.
+"Alguém aqui já teve alguma experiência, por mais superficial que seja, com **ferramentas agênticas** como: Claude, ChatGPT/Codex, Gemini ou algum outro?"
+{Espera alguém responder e desenvolve um pouco, talvez pergunta o que fez, como fez e se sente que vibecodou em algum momento}
+
+[AINDA COM O PÚBLICO]
+- Continua na provocação.
+"Já vi que temos contato com a IA, mas todo mundo sabe o que ela possibilita? Rapidez? Agilidade? Sim, de certa forma. Mas talvez você não tenha se dado conta de o que ela pode gerar: **Atrofia Cognitiva**. Atrofia Cognitiva é basicamente o processo onde o nosso cérebro se acostuma, e relativamente gosta, de terceirizar o pensamento crítico e as decisões difíceis. Causa muito evidente dessa condição é o famoso termo no meio tech **'Vibe-Coding'**" O ato de vibe codar em si não garante Atrofia Cognitiva, mas terceirizar excessivamente o esforço do pensar, pode.
+
+[INTRODUÇÃO PROFUNDA NO TERMO DA PALESTRA]
+- Aprofundação no termo técnico.
+"Vibecoding possui alguns significados. Nos termos técnicos vibecodar seria codificar com o auxílio de **inteligência artificial generativa** onde codificamos utilizado comandos de **linguagem natural** ao invés de escrevermos de fato o código. Em tese não há um problema de fato com isso, aprendemos durante o curso sobre diversos níveis de codificação: baixo nível com Assembly e Fortran e alto nível com Java, Go e Python. Nessa hierarquia de níveis, o quão baixo estamos, mais próximos estamos do **baremetal**, de instruções de máquina mesmo, e quanto mais altos estamos, mais próximos à linguagem humana estamos. Tecnicamente falando, vibecodar seria o mais alto nível de codificação, um novo paradigma, segundo essa mesma teoria de níveis."
+
+[PROSSEGUE NO APROFUNDAMENTO]
+- Continua aprofundando.
+"A parte prejudicial do termo surgiu em fevereiro de 2025, criado por **Andrej Karpathy**, fundador da **OpenAI**. O termo passou a ter força no surgimento da empresa **Lovable** - um sistema cuja premissa seria criar um site com base apenas em uma ideia. Por mais que Andrej não estivesse se referindo a esta empresa em específico, o termo tomou a área de **desenvolvimento low/no-code**. Ultimamente vibe coding refere-se ao processo de criar um sistema qualquer com dependência total da inteligência artificial generativa, sem audição ou conferência do código produzido."
+
+[APRESENTA OUTROS PONTOS]
+- Vibe codar pode não ser só não olhar para o código.
+"Porém hoje em dia é relativamente incorreto ou depreciado dizer que vibe codar é meramente o fato de não observar o código. Existem inúmeras formas e processos de revisão de código, inclusive agêntica. Ou seja, você como desenvolvedor cria toda uma pipeline de produção onde um agente lê o contexto e codifica e outro agente faz o code-review, visando manter o padrão de qualidade de código com base em critérios pré-definidos. Esse desenvolvedor é um vibe coder? Eu não diria. Se esse desenvolvedor entende o código produzido e acompanha o que é gerado, ele é apenas um profissional que se adequou ao novo mercado."
+
+[APRESENTA CONCEITOS DE ENGENHARIA DE SOFTWARE]
+- Por que esse desenvolvedor não é um vibe coder?
+"Em grandes empresas, suas equipes possuem perfis bem definidos e hierárquicos, um exemplo seria uma empresa onde há: **Product Owner** -> **Product Manager** -> **Tech Lead** -> **Desenvolvedor revisor, normalmente sênior** -> **Desenvolvedores menores**. Nesse sentido, o desenvolvedor comum era quem recebia uma tarefa e a codificava até ficar pronta e mandava para alguém fazer o review. Agora é possĩvel como desenvolvedor subir um nível e delegar esse desenvolvimento bruto para o agente e se estabelecer como auditor, revisor e guia desse novo " funcionário"." 
+
+[ESTEIRA DE PRODUÇÃO]
+- Como criar essas pipelines de desenvolvimento?
+"Para se adequar a esse novo processo de trabalho precisamos conhecer algumas palavrinhas chave:
+- **Spec-Driven-Development**: você não delega para o seu desejo para a IA, você expecifica o que deseja que ela faça, com critérios de aceitação. ERRADO: Crie um sistema de autenticação com login e cadastro de usuários. CERTO: Implemente a funcionalidade conforme a especificação, que estabelece: - RF01: O usuário deve autenticar-se utilizando e-mail e senha. - RNF01: As senhas devem ser armazenadas utilizando Argon2id. - RN02: O e-mail deve ser único no sistema. - Critério de aceite: Credenciais inválidas devem retornar HTTP 401. - Arquitetura: Respeitar os limites definidos entre domínio, aplicação e infraestrutura.
+- **AGENTS.md**: guia básico para seu agente. É aqui onde você estabelece como a IA deve se comportar quanto à arquitetura; quanto à dúvidas que ela pode vir a ter, logo aqui podemos indicar onde fica a documentação; quanto à boas práticas; code-reviews; e tudo quanto você espera que ela faça ou saiba quanto for codificar. É importante sabermos que esse arquivo é sempre lido ou carregado para o agente quando uma nova ação inicia no escopo daquele arquivo."
+
+[CONTINUA NO ASSUNTO]
+"- Documentação: aqui é onde o engenheiro de software realmente se destaca do 'pedreiro digital'. Uma boa documentação costuma envolver detalhes técnicos da aplicação, como: **requisitos funcionais**; **requisitos não funcionais**; **diagramas de classe**, **de caso de uso**; **histórias de usuários**; depoimentos e conversas com o cliente. Essa é a mais importante etapa que evita vibecodar, pois normalmente você sabe o que quer fazer, ou seja, você tem o depoimento, mas se não esmiuçar esse depoimento de forma técnica, o agente vai alucinar por falta de decisões"
+
+[FOCO EM DECISÃO]
+- Motivo do desenvolvedor existir.
+"E essa é a palavra mais importante da noite: decisão. É a decisão que não podemos terceirizar para o agente. O problema não é ter um funcionário que erra. É ter um funcionário que erra e um responsável que não sabe identificar o erro. Enquanto desenvolvedores ainda somos responsáveis pelas decisões que tomamos no código ou no projeto. É na tomada de decisão que evitamos a Atrofia Cognitiva, ou parte dela pelo menos, o que diferencia um bom desenvolvedor não é apenas sua capacidade de implementar uma solução, mas sua capacidade de escolher, justificar e avaliar essa solução. A IA pode escrever um **CRUD** em segundos, mas alguém precisa saber se aquele CRUD deveria existir daquele jeito."
+
+[EXEMPLO PRÁTICO DE DECISÃO EM CÓDIGO]
+"Observemos esse código escrito em Go. Go é uma linguagem relativamente parecida com C, ele usa Structs e ponteiros também. Observemos esse exemplo: 
+'type Empresa struct {
+	nome String
+	cnpj *value_object.CNPJ
+}
+
+func (e *Empresa) getCNPJ () *value_object.CNPJ {
+	var auxiliar = *e.cnpj //pega o valor e não a referência
+	return &var
+}'
+Tecnicamente falando, alguém sabe identificar qual a decisão possível aqui? 
+
+Se a entidade já possiu um ponteiro, qual a necessidade de criar uma variável auxiliar, passar o valor do ponteiro para ela e retornar o ponteiro dessa nova variável? Seria mais simples apenas retornar o ponteiro da entidade, custaria menos recursos.
+Isso é o chamado **'trade-off'**. Existe uma decisão com pontos positivos e negativos. Nesse caso, retornando o ponteiro, o consumidor poderia mudar o valor em alguma parte do código para algo indesejado, devido à referência entregue. Porém em projetos pequenos, esse pode ser um trade-off aceitável. Aqui onde mora o olhar crítico sobre o código gerado."
+
+[INTRODUÇÃO ÀS SKILLS]
+- Como faço nos meus projetos para tomar boas decisões.
+"Tomar decisões e anotá-las pode ser massante e complicado. Existem algumas **skills** que podem nos ajudar nesse sentido. Abrindo um parênteses aqui: skill é um conjunto de instruções prontas para o agente, basicamente. Ao invés de em todo chat dissermos: 'haja como um desenvolvedor sênior, escreva código ...' nós escrevemos essas instruções em um arquivo chamado SKILL.md e damos a ele um nome. Podemos chamar essa skill junto no prompt e dizer para o agente usar essa skill para a tarefa. 
+Agora voltando, uso alguns conjuntos de skills do **Math Pocock**, do repositório chamado skills (mattpocock/skills), esse repo contém diversas skills e um plugin. Dessas skills destaco a **'grill-me'**, **'grilling'** e **'grill-with-docs'**. Esse é um conjunto poderoso para tomar decisões e montar uma boa documentação. No dia-a-dia você vai querer usar a 'grill-with-docs', essa skill utiliza os documentos que você possui no escopo da ação e lhe faz um questionário sobre o assunto do projeto. É um pouco diferente de modo plan dos modelos da OpenIA ou da **Antropic** pois são feitas perguntas voltadas para casos excepcionais e o agente aprende com as perguntas anteriores, formulando novas perguntas com base nas últimas respostas."
+
+[CONTINUA NAS SKILLS]
+- Aprendendo sobre escopo de skills.
+"Ainda no assunto de skills, precisamos aprender sobre escopo de skill. Os agentes procuram skills em no mínimo dois escopos, na pasta do usuário '~/<.codex/.claude>.agents' no linux ou 'C:\<usuário>\<.codex/.claude>\.agents', essa pasta é o escopo global, skills e AGENTS.md colocados aqui são carregados em todas as ações, skills como essas do Math podem ser colocadas aqui tranquilamente pois são bem vindas em qualquer ambiente. E existe os escopos locais do projeto, onde você cria o diretório .agents na raiz do projeto ou em outras subpastas desse mesmo projeto, essas skills são carregadas somente naquele projeto, aqui colocamos skills pertinentes somente àquele projeto que estamos trabalhando."
+
+[VOLTA PARA TOMADA DE DECISÃO]
+- Quanto usar ou procurar uma skill?
+"Ter uma infinidade de skills não te garante um bom resultado. Em muitos casos quanto mais **contexto** o agente possui, mais ele tende a alucinar. Normalmente você como desenvolvedor deve escolher uma skill por algum motivo: quando estiver criando a documentação, busque skills que pesquisem sobre o produto e lhe questione sobre decisões; quando estiver desenvolvendo frontend use skills de gosto de UI, refinamento de telas e assim por diante. Caso não saiba, peça ao seu agente para pesquisar a skill certa para seu objetivo, ou até mesmo monte você mesmo."
+
+[INTRODUZ PRODUTO DO IF]
+- Começa a direcionar para o produto de fato.
+"Dito tudo isso, vamos ao produto de fato. Hoje nosso objetivo aqui é partir do 0 até a versão 1.0.0, beta, de um produto real para o Campus. Nessa noite tentaremos criar uma versão inicial desse projeto, sendo assim nosso compromisso é com o conhecimento, não necessariamente com o produto estar totalmente acabado. Talvez isso possa se tornar um projeto da instituição ou até finalizado por nós da comunidade mesmo. Quando idealizei esse momento, procurei o diretor e professor Marcelo Paravisi e coletei seu depoimento, foi uma conversa de aproximadamente 45 minutos e mais algumas mensagens."
+
+[COMO FUNCIONA O FLUXO HOJE]
+"Atualmente nosso campus possui um fluxo de Registro de Demandas do Ensino. Resumidamente, algumas situações podem ocorrer, como por exemplo: aluno quebrou uma janela; aluno precisou sair fora de horário de aula; professor precisa se ausentar por motivo de saúde ou entre outras demadas. Quando algo nesse sentido acontece, algum servidor do campus registra sobre quem é essa demanda (que aluno) -> O vínculo dessa pessoa (Aluno, Professor, Técnico, Pai ou responsável ou outro) -> Curso da pessoa na resposta anterior (EMI Administração, EMI Informática, Sub Adm, Sub Tur, Sub Multimeios, Superior ADS, Superior Letras, Superior Matemática, Superior TPG ou Pós-graduação) -> Demanda solicita por (nome) -> Vínculo dessa pessoa (Aluno, Professor, Técnico, Pai ou responsável ou outro) -> Curso dessa mesma pessoa (EMI Administração, EMI Informática, Sub Adm, Sub Tur, Sub Multimeios, Superior ADS, Superior Letras, Superior Matemática, Superior TPG ou Pós-graduação) -> Email ou telefone do demandante -> Data do registro -> Tipo de demanda (chegada atrasada, saída antecipada, gazeando aula, uso indevido do celular, acolhimento, sugestão, reclamação, notificação ou outro) -> Descrição da demanda -> Enviar demanda para (Coordenação de Ensino, Direção de Ensino, Coordenação Pedagógica, Coordenaria de Assistência Estudantil, Coordenação do NAPNE, Professora do AEE, Psicóloga ou outro) -> Upload de foto do formulário (versão física do formulário de demanda)"
+
+[TRATAMENTO TÉCNICO]
+- O que acontece ao enviar o formulário.
+"É importante destacarmos que esse formulário só permite envio por usuários Google autenticados que possuam emails '@osorio.ifrs.edu.br', logo esse é o padrão de segurança adotado para evitar respostas indesejadas. Voltando, ao enviar o formulário totalmente preenchido, um fluxo escrito na plataforma **Google AppScript** entra em ação. É analisado o campo 'Enviar demanda para': cada uma dessas chaves é associada à um email em específico, nesse cenário a script envia um email contendo todas as informações preenchidas para o setor indicado. Ao mesmo passo, existe uma painel administrativo, criado com a mesma ferramenta, ao qual é alimentado quando é disparado o envio do formulário. Nesse painel, há alguns usuários (emails) cadastrados pelo administrador. Cada usuário possui um escopo denominado setor e pode interagir com os dados daquela denominação, o que significa dizer que o usuário X pode ser cadastrado para o setor pedagógico e este poderá ver os dados dos envios marcados para o pedagógico. Esse painel conta com: listagem/histórico de envios, permitindo ler as informações de um envio, tratar do assunto com um comentário, enviar para um outro setor ou encerrar a demanda; dashboards das demandas por setor com gráficos de coluna comparativos entre os tipos de solicitação."
+
+[LIMITAÇÃO DO SISTEMA ATUAL]
+- Onde o fluxo peca.
+"O sistema construído não possui falhas estruturais, mas mesmo assim pode ser melhorado. Foram levantados alguns pontos de melhoria: 
+- Acompanhamento da solicitação: ao realizar o envio, o servidor é notificado apenas por emails, ele não possui conhecimento em tempo real do tratamento do seu caso.
+- Falta de rastreio entre os setores: um setor não enxerga facilmente o caminho que a demanda percorreu: caso a demanda percorra por 3 setores diferentes, o terceiro setor não tem acesso fácil a quem contribuiu com a solicitação.
+- Tratamento de **edge cases**: caso seja realizado um envio para o setor incorreto, caso seja realizado um envio para um setor não listado são exemplos de casos de borda não compreendidos pelo fluxo atual.
+- Dificuldade de novas features: por se tratar de uma ferramenta Google, é preciso possuir acesso à conta dona do código para produzir novas features. Além disso, o Google AppScript delimita o uso apenas para .html e .gs (js like), logo não é possível criar um reposítorio git pela plataforma, por exemplo."
+
+[ONDE ENTRAMOS]
+- O que faremos.
+"Pensando nisso, utilizaremos as seguintes tecnologias:
+- Para construção de documentação: skills 'grill-me'e 'grill-me-with-docs' (investigação e levantamento de requisitos), solicitação diagramas (de classe e de casos de uso).
+- Para codificação: Java + **SpringBoot** (backend); **Flutter** (frontend) e PostgreSql (banco de dados relacional).
+- Para infraestrutura: **Docker**.
+- Para vercionamento: **Git**.
+- Para acompanhamento de tarefas: **GitHub Issues e Projects**."
+
+[COMEÇA A APRESENTAR O QUE FOI FEITO ANTES DA OFICINA]
+- O que foi feito em off.
+- Coleta do depoimento (kickoff meeting).
+- Requisitos previamente criados.
+- Plano de desenvolvimento.
+- Apresentação das decisões para tomar junto com a platéia (alguns outros requisitos e os diagramas).
