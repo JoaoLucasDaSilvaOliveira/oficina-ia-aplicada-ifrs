@@ -67,8 +67,10 @@ explicados (definições em `glossario.js`, termos por slide no campo `terms` de
 slide e uma lista de A a Z. O endereço guarda a consulta: `dicionario/#<id>`
 abre os termos do slide com esse ID, e `dicionario/#termos` abre a lista toda.
 
-Na apresentação, o slide 3 mostra o QR code grande do dicionário. Nos demais
-slides, um QR pequeno no canto inferior esquerdo abre os termos daquele slide.
+O dicionário traz só termos técnicos que os primeiros semestres ainda não viram
+(os marcados no roteiro e outros do mesmo tipo). Na apresentação, o slide 3 mostra
+o QR code grande do dicionário. Nos slides com termos técnicos, um QR pequeno no
+canto inferior esquerdo abre os termos daquele slide; nos demais, ele não aparece.
 O slide 2 traz QR codes do GitHub e do LinkedIn. Os QR codes são gerados no
 navegador por `assets/qrcode.js` (qrcode-generator 1.4.4, de Kazuhiko Arase,
 licença MIT), sem internet.
@@ -78,7 +80,7 @@ do dicionário assume a publicação em
 `https://joaolucasdasilvaoliveira.github.io/oficina-ia-aplicada-ifrs/dicionario/`.
 Se o repositório tiver outro nome, troque ali e os QR codes se ajustam sozinhos.
 Para incluir um termo, adicione-o a `terms` no slide e a definição em
-`glossario.js`; o teste falha se faltar alguma definição.
+`glossario.js`; o teste falha se faltar uma definição ou se sobrar uma sem slide.
 
 ## Verificação
 

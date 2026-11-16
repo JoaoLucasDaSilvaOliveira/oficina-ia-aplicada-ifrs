@@ -13,6 +13,8 @@
     if (!slidesByTerm.has(term)) slidesByTerm.set(term, []);
     slidesByTerm.get(term).push(position);
   }));
+  // Só os slides com termos técnicos entram na navegação; a numeração continua a da apresentação.
+  const withTerms = SLIDES.map((slide, position) => position).filter(position => SLIDES[position].terms.length);
   const allTerms = Object.keys(GLOSSARY).sort((a, b) => a.localeCompare(b, "pt-BR", {sensitivity: "base"}));
   let current = 0;
 
@@ -61,13 +63,14 @@
   }
 
   function renderSlide(position) {
-    current = Math.max(0, Math.min(SLIDES.length - 1, position));
+    // Um slide sem termos leva ao próximo que tenha (ou ao último).
+    current = withTerms.find(candidate => candidate >= position) ?? withTerms[withTerms.length - 1];
     const slide = SLIDES[current];
     $("#slide-select").value = slide.id;
     $("#slide-heading").textContent = `Slide ${pad(current + 1)}: ${slide.title}`;
     $("#tab-slide").href = `#${slide.id}`;
-    $("#prev").disabled = current === 0;
-    $("#next").disabled = current === SLIDES.length - 1;
+    $("#prev").disabled = current === withTerms[0];
+    $("#next").disabled = current === withTerms[withTerms.length - 1];
     const list = $("#slide-terms");
     list.replaceChildren(...slide.terms.map(term => termItem(term, {skipSlide: current})));
     document.title = `${slide.title} · Dicionário`;
@@ -103,11 +106,12 @@
     const hash = decodeURIComponent(location.hash.slice(1));
     if (hash === "termos") return renderAll();
     const position = SLIDES.findIndex(slide => slide.id === hash);
-    renderSlide(position < 0 ? current : position);
+    renderSlide(position < 0 ? (current || withTerms[0]) : position);
   }
 
   const select = $("#slide-select");
-  SLIDES.forEach((slide, position) => {
+  withTerms.forEach(position => {
+    const slide = SLIDES[position];
     const option = document.createElement("option");
     option.value = slide.id;
     option.textContent = `${pad(position + 1)} · ${slide.title}`;
@@ -115,11 +119,15 @@
   });
   const go = position => {
     $("#search").value = "";
-    location.hash = SLIDES[Math.max(0, Math.min(SLIDES.length - 1, position))].id;
+    location.hash = SLIDES[position].id;
+  };
+  const step = direction => {
+    const order = withTerms.indexOf(current) + direction;
+    if (order >= 0 && order < withTerms.length) go(withTerms[order]);
   };
   select.addEventListener("change", () => go(SLIDES.findIndex(slide => slide.id === select.value)));
-  $("#prev").addEventListener("click", () => go(current - 1));
-  $("#next").addEventListener("click", () => go(current + 1));
+  $("#prev").addEventListener("click", () => step(-1));
+  $("#next").addEventListener("click", () => step(1));
   $("#search").addEventListener("input", event => renderSearch(event.target.value));
   window.addEventListener("hashchange", () => {
     $("#search").value = "";

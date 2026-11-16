@@ -241,11 +241,11 @@
       const url = linkFor(element.dataset.linkText);
       if (url) element.textContent = url.replace(/^https?:\/\//, "").replace(/\/$/, "");
     });
-    // QR do canto: abre o dicionário direto nos termos do slide atual.
+    // QR do canto: abre o dicionário direto nos termos do slide atual (só se houver termos técnicos).
     const corner = document.querySelector("#slide-qr");
     const base = linkFor("dicionario");
     const slide = SLIDES[index];
-    corner.hidden = !base || slide.id === "dicionario" || typeof qrcode !== "function";
+    corner.hidden = !base || !slide.terms.length || typeof qrcode !== "function";
     if (!corner.hidden) {
       const url = `${base}#${slide.id}`;
       corner.href = url;

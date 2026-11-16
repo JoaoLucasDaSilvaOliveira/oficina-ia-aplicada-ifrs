@@ -73,6 +73,8 @@ assert.equal(slides.length, 36);
 vm.runInContext(fs.readFileSync(path.join(root, "glossario.js"), "utf8") + ";this.G = GLOSSARY;", context);
 const glossary = context.G;
 slides.forEach(slide => slide.terms.forEach(term => assert.ok(glossary[term], `${slide.id}: termo sem definição: ${term}`)));
+for (const term of Object.keys(glossary)) assert.ok(slides.some(slide => slide.terms.includes(term)), `definição sem slide: ${term}`);
+for (const term of ["QR code", "Pensamento crítico", "LinkedIn"]) assert.ok(!glossary[term], `termo não técnico no dicionário: ${term}`);
 for (const term of ["Desenvolvimento backend", "Ferramentas agênticas", "Atrofia cognitiva", "Vibe coding", "IA generativa", "Linguagem natural", "Bare metal", "Andrej Karpathy", "OpenAI", "Lovable", "Low-code e no-code", "Product Owner", "Product Manager", "Tech Lead", "Desenvolvedor sênior", "Desenvolvedor júnior", "Spec-Driven Development", "AGENTS.md", "Requisito funcional", "Requisito não funcional", "Diagrama de classes", "Diagrama de casos de uso", "História de usuário", "CRUD", "Trade-off", "Skill", "Matt Pocock", "grill-me", "grilling", "grill-with-docs", "Anthropic", "Contexto", "Google Apps Script", "Caso de borda", "Spring Boot", "Flutter", "Docker", "Git", "GitHub Issues e Projects"]) {
   assert.ok(glossary[term], `termo do roteiro sem definição: ${term}`);
   assert.ok(slides.some(slide => slide.terms.includes(term)), `termo do roteiro fora dos slides: ${term}`);
@@ -88,7 +90,7 @@ slides.forEach(slide => {
   const parts = new Set([...slide.html.matchAll(/data-part="([^"]+)"/g)].map(match => match[1]));
   assert.deepEqual([...parts].sort(), [...new Set(stages)].sort(), `${slide.id}: etapas e peças`);
   assert.equal(typeof slide.chapter, "string");
-  assert.ok(slide.terms.length);
+  assert.ok(Array.isArray(slide.terms));
 });
 vm.runInContext(fs.readFileSync(path.join(root, "app.js"), "utf8"), context);
 const main = getElement("#slide");
@@ -155,7 +157,7 @@ assert.equal(main.dataset.slideId, "encerramento");
 assert.equal(getElement("#next").disabled, true);
 assert.equal(getElement(".progress").getAttribute("aria-valuenow"), "36");
 assert.equal(emitted.at(-1).detail.id, "encerramento");
-assert.ok(emitted.at(-1).detail.terms.length);
+assert.ok(Array.isArray(emitted.at(-1).detail.terms));
 navigate("skills"); assert.equal(getElement("#chapter").textContent, "");
 
 // Janela do apresentador: pede o estado, navega e recebe o estado de volta.
