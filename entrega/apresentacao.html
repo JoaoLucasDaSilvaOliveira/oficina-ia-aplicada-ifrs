@@ -2785,7 +2785,7 @@ var qrcode = function() {
 
 /* Endereços dos QR codes. Ajuste "dicionario" se o repositório do GitHub Pages tiver outro nome. */
 const WORKSHOP_LINKS = {
-  "dicionario": "https://joaolucasdasilvaoliveira.github.io/oficina-ia-aplicada/dicionario/",
+  "dicionario": "https://joaolucasdasilvaoliveira.github.io/oficina-ia-aplicada-ifrs/dicionario/",
   "github": "https://github.com/JoaoLucasDaSilvaOliveira",
   "linkedin": "https://www.linkedin.com/in/jo%C3%A3o-lucas-da-silva-oliveira"
 };
@@ -2844,18 +2844,10 @@ const SLIDES = [
     check: "Um estudo de 2025 da Microsoft Research com a Carnegie Mellon (319 profissionais) associou mais confiança na IA a menos pensamento crítico autorrelatado. Isso não demonstra dano cerebral nem perda permanente: trate “atrofia cognitiva” como metáfora."
   },
   {
-    id: "vibecoding", chapter: "Uso crítico de IA",
-    title: "Vibecoding", terms: ["Vibe coding","Andrej Karpathy","OpenAI","Lovable","Low-code e no-code","IA generativa"],
-    html: `<h2>Vibecoding</h2><p class="lead definition">Gerar software por comandos em linguagem natural e seguir pelo resultado, sem acompanhar de perto o código produzido.</p><p class="caption">O termo foi popularizado por Andrej Karpathy em fevereiro de 2025.</p><p class="caption reveal">Usar IA e entender o que se entrega continua exigindo trabalho de engenharia.</p>`,
-    notes: "Vibe coding tem alguns significados. O termo foi popularizado em fevereiro de 2025 por Andrej Karpathy, um dos fundadores da OpenAI e ex-diretor de IA da Tesla. Ele descrevia um jeito de programar se entregando ao fluxo: pedir em linguagem natural e aceitar o resultado sem acompanhar o código. O termo ganhou força com plataformas como a Lovable, que prometem criar um site a partir de uma ideia, e tomou o mundo low/no-code. Hoje, costuma descrever criar um sistema com dependência total da IA, sem revisar o que foi produzido. [Revele.] Mas usar IA para programar não é, automaticamente, vibe coding.",
-    check: "Diferencie o uso amplo do termo de sua descrição original, em que Karpathy deixava de ler os diffs e o código ultrapassava sua compreensão. Ele foi membro fundador da OpenAI, não seu único fundador. O termo não foi criado pela Lovable. Não equipare toda programação assistida por IA a vibecoding.",
-    sources: [{"label":"Publicação original de Andrej Karpathy","url":"https://x.com/karpathy/status/1886192184808149383"}]
-  },
-  {
     id: "escada", chapter: "Uso crítico de IA",
     title: "Uma nova camada de abstração?", terms: ["Abstração","Linguagem de programação","Bare metal","Linguagem natural"],
     html: `<h2>Uma nova camada<br>de abstração?</h2><ol class="stairs"><li><strong>Código de máquina</strong><small>01001000 01101001</small></li><li><strong>Assembly</strong><small>MOV, ADD, JMP</small></li><li><strong>C</strong><small>Memória e ponteiros</small></li><li><strong>Java · Go · Python</strong><small>Objetos e bibliotecas</small></li><li class="stairs-top"><strong>Linguagem natural</strong><small>Com um agente de IA</small></li></ol><p class="caption">Quanto mais à direita, mais perto da linguagem humana.</p>`,
-    notes: "Durante o curso aprendemos sobre níveis de linguagem. Quanto mais baixo, mais perto das instruções de máquina; quanto mais alto, mais perto da linguagem humana. Por essa lógica, programar com IA seria o degrau mais alto: em vez de escrever cada instrução, descrevemos objetivos e restrições, e um modelo transforma isso em código. Em tese, não há problema nisso. Só que esse último degrau tem uma diferença importante.",
+    notes: "Vibe coding tem alguns significados. Tecnicamente, vibecodar seria programar com IA generativa usando comandos em linguagem natural, em vez de escrever o código. Em tese, não há problema nisso. Durante o curso aprendemos sobre níveis de linguagem: quanto mais baixo, mais perto das instruções de máquina, do bare metal; quanto mais alto, mais perto da linguagem humana. Por essa lógica, vibecodar seria o degrau mais alto, um novo paradigma. Só que esse último degrau tem uma diferença importante.",
     check: "C, Java, Go e Python são todas linguagens de alto nível; a escada mostra a distância da máquina, não uma classificação formal. Fortran também é de alto nível. Linguagem natural não tem semântica formal e determinística: é uma analogia."
   },
   {
@@ -2866,6 +2858,14 @@ const SLIDES = [
 }</code></pre></div><div><div class="code-title">Uma intenção em linguagem natural</div><p class="lead">“Bloqueie o acesso depois de muitas tentativas.”</p></div></div><p class="caption reveal">Quantas tentativas? Por quanto tempo? Quem pode desbloquear?</p>`,
     notes: "Vejam a diferença. O código diz exatamente o que acontece: qual é a condição e o que fazer. A frase em linguagem natural é mais confortável de escrever, mas deixa perguntas abertas: quantas tentativas são “muitas”? Bloqueia por quanto tempo? Quem desbloqueia? Quando subimos de nível, alguém continua precisando responder essas perguntas, e verificar se o resultado responde do jeito certo.",
     check: "Compare a ambiguidade da intenção com uma condição explícita. É uma analogia didática sobre abstração, não uma classificação formal em que prompts seriam uma nova linguagem de nível mais alto. Fortran é uma linguagem de alto nível, ao contrário da classificação no roteiro."
+  },
+  {
+    id: "vibecoding", chapter: "Uso crítico de IA",
+    title: "Vibecoding", terms: ["Vibe coding","Andrej Karpathy","OpenAI","Lovable","Low-code e no-code","IA generativa"],
+    html: `<h2>Vibecoding</h2><p class="lead definition">Gerar software por comandos em linguagem natural e seguir pelo resultado, sem acompanhar de perto o código produzido.</p><p class="caption">O termo foi popularizado por Andrej Karpathy em fevereiro de 2025.</p><p class="caption reveal">Usar IA e entender o que se entrega continua exigindo trabalho de engenharia.</p>`,
+    notes: "A parte problemática do termo vem de fevereiro de 2025, quando Andrej Karpathy, um dos fundadores da OpenAI e ex-diretor de IA da Tesla, descreveu um jeito de programar se entregando ao fluxo: pedir em linguagem natural e aceitar o resultado sem acompanhar o código. O termo ganhou força com plataformas como a Lovable, que prometem criar um site a partir de uma ideia, e tomou o mundo low/no-code. Hoje, costuma descrever criar um sistema com dependência total da IA, sem revisar o que foi produzido. [Revele.] Mas usar IA para programar não é, automaticamente, vibe coding.",
+    check: "Diferencie o uso amplo do termo de sua descrição original, em que Karpathy deixava de ler os diffs e o código ultrapassava sua compreensão. Ele foi membro fundador da OpenAI, não seu único fundador. O termo não foi criado pela Lovable. Não equipare toda programação assistida por IA a vibecoding.",
+    sources: [{"label":"Publicação original de Andrej Karpathy","url":"https://x.com/karpathy/status/1886192184808149383"}]
   },
   {
     id: "mudanca-escopo", chapter: "Uso crítico de IA",
@@ -2880,13 +2880,6 @@ const SLIDES = [
     html: `<h2>Seu papel no processo</h2><ol class="flow"><li>Definir<small>Problema e critérios</small></li><li>Delegar<small>Contexto e limites</small></li><li>Revisar<small>Código e comportamento</small></li><li>Validar<small>Evidências da entrega</small></li></ol><p class="lead reveal">Um agente pode revisar.<br>Alguém continua responsável por aceitar.</p>`,
     notes: "Na prática, meu papel vira esta esteira: definir o problema e os critérios, delegar com contexto e limites, revisar o código e o comportamento, e validar com evidências. [Revele.] Um agente pode até revisar. Mas alguém continua responsável por aceitar.",
     check: "Explique que a organização das equipes varia. PO, PM, tech lead e revisores têm responsabilidades diferentes e não formam necessariamente uma hierarquia linear. A esteira acima representa o trabalho, não um organograma. Revisão por IA também precisa de avaliação e testes."
-  },
-  {
-    id: "decisao", chapter: "Uso crítico de IA", className: "statement",
-    title: "Decisão", terms: ["Decisão técnica","CRUD"],
-    html: `<h2>Decisão.</h2><p class="lead">A IA pode escrever um CRUD em segundos.<br>Alguém precisa saber se ele deveria existir daquele jeito.</p><p class="lead reveal" style="margin-top:32px">O problema não é ter um funcionário que erra.<br>É ter um funcionário que erra e um responsável<br>que não sabe identificar o erro.</p>`,
-    notes: "E essa é a palavra mais importante da noite: decisão. É a decisão que não podemos terceirizar para o agente. O que diferencia um bom desenvolvedor não é só a capacidade de implementar uma solução, mas de escolher, justificar e avaliar essa solução. A IA pode escrever um CRUD em segundos, mas alguém precisa saber se aquele CRUD deveria existir daquele jeito. [Revele.] O problema não é ter um funcionário que erra. É ter um funcionário que erra e um responsável que não sabe identificar o erro. [Pausa antes de seguir.]",
-    check: "Essa é a ideia central da oficina. O problema é não reconhecer o erro da solução que se aceitou. Escolher, justificar e avaliar fazem parte do desenvolvimento. Faça uma pausa antes de seguir para as ferramentas."
   },
   {
     id: "casa", chapter: "Como se constrói um sistema",
@@ -2948,6 +2941,13 @@ Revise as alterações.</code></pre></div></div>`,
     html: `<h2>Do relato ao trabalho executável</h2><ol class="flow"><li>Conversa<small>Problema e contexto</small></li><li>Requisitos<small>Comportamento esperado</small></li><li>Modelo<small>Conceitos e relações</small></li><li>Tarefas<small>Entregas verificáveis</small></li></ol><p class="lead">Documentar é <span class="keyword">registrar decisões</span> que o próximo passo precisa conhecer.</p><p class="caption">Sem essas decisões, o agente preenche as lacunas por conta própria.</p>`,
     notes: "E a terceira é a documentação. É aqui que o engenheiro de software se destaca do “pedreiro digital”. Uma boa documentação envolve requisitos funcionais e não funcionais, diagramas de classe e de casos de uso, histórias de usuário e os próprios depoimentos e conversas com o cliente. É a etapa que mais evita vibecodar: normalmente você sabe o que quer, tem o depoimento, mas se não destrinchar esse depoimento de forma técnica, o agente preenche as lacunas por conta própria, por falta de decisões.",
     check: "Dê exemplos de documentos: relato do cliente, requisitos, diagramas de classe e de casos de uso, histórias e critérios de aceite. São recursos para esclarecer o trabalho. Não é preciso produzir todos em todo projeto. Um backlog organiza trabalho; issues podem representar melhorias e funcionalidades, além de erros."
+  },
+  {
+    id: "decisao", chapter: "Uso crítico de IA", className: "statement",
+    title: "Decisão", terms: ["Decisão técnica","CRUD"],
+    html: `<h2>Decisão.</h2><p class="lead">A IA pode escrever um CRUD em segundos.<br>Alguém precisa saber se ele deveria existir daquele jeito.</p><p class="lead reveal" style="margin-top:32px">O problema não é ter um funcionário que erra.<br>É ter um funcionário que erra e um responsável<br>que não sabe identificar o erro.</p>`,
+    notes: "E essa é a palavra mais importante da noite: decisão. É a decisão que não podemos terceirizar para o agente. O que diferencia um bom desenvolvedor não é só a capacidade de implementar uma solução, mas de escolher, justificar e avaliar essa solução. A IA pode escrever um CRUD em segundos, mas alguém precisa saber se aquele CRUD deveria existir daquele jeito. [Revele.] O problema não é ter um funcionário que erra. É ter um funcionário que erra e um responsável que não sabe identificar o erro. [Pausa antes de seguir.]",
+    check: "Essa é a ideia central da oficina. O problema é não reconhecer o erro da solução que se aceitou. Escolher, justificar e avaliar fazem parte do desenvolvimento. Faça uma pausa antes de seguir para as ferramentas."
   },
   {
     id: "go-pergunta", chapter: "Uma decisão em código",
@@ -3021,18 +3021,18 @@ Registre as decisões tomadas.</code></pre></div></div>`,
     check: "Conte como procurou o professor Marcelo Paravisi e reuniu a conversa e as mensagens. A meta é demonstrar uma versão inicial utilizável; o compromisso principal é com o aprendizado. Evite prometer um sistema institucional pronto ou confundir beta com uma versão estável 1.0.0. Confira com os colegas se podem ser apresentados pelo nome."
   },
   {
-    id: "fluxo-atual", chapter: "Nosso problema real",
-    title: "Como a demanda chega ao setor", terms: ["Formulário","Google Apps Script","Autenticação"],
-    html: `<h2>Como a demanda<br>chega ao setor</h2><ol class="flow"><li>Servidor<small>Acesso institucional</small></li><li>Formulário<small>Pessoa, tipo e relato</small></li><li>Apps Script<small>Direciona o envio</small></li><li>Setor<small>E-mail e painel</small></li></ol><p class="caption">Registro, encaminhamento e tratamento já fazem parte do processo atual.</p>`,
-    notes: "Hoje o campus tem um fluxo de Registro de Demandas do Ensino. Algumas situações acontecem: um aluno quebrou uma janela, precisou sair fora do horário, um professor precisa se ausentar por motivo de saúde. Quando algo assim acontece, um servidor registra a demanda num formulário. Esse formulário só aceita envios de contas Google autenticadas com e-mail @osorio.ifrs.edu.br: é o padrão de segurança para evitar respostas indesejadas. Ao enviar, um fluxo em Google Apps Script lê o campo “Enviar para” e manda um e-mail com todas as informações para o setor indicado. Ao mesmo tempo, alimenta um painel administrativo.",
-    check: "Fluxo resumido do roteiro, não resultado de auditoria do sistema. O formulário usa contas Google do domínio @osorio.ifrs.edu.br. O usuário informa a pessoa envolvida, vínculos, cursos, demandante e contato, data, tipo, descrição, destino e anexo. Apps Script associa o destino a um e-mail e alimenta o painel."
-  },
-  {
     id: "formulario", chapter: "Nosso problema real",
     title: "O que o formulário registra", terms: ["Formulário","Demanda","Setor"],
     html: `<h2>O que o formulário registra</h2><div class="split"><div><h3>Tipo de demanda</h3><ul class="tags"><li>Chegada atrasada</li><li>Saída antecipada</li><li>Gazeando aula</li><li>Uso indevido do celular</li><li>Acolhimento</li><li>Sugestão</li><li>Reclamação</li><li>Notificação</li><li>Outro</li></ul></div><div><h3>Para quem vai</h3><ul class="tags"><li>Coordenações de Curso</li><li>Direção de Ensino</li><li>Coordenação Pedagógica</li><li>Assistência Estudantil</li><li>NAPNE</li><li>Professora do AEE</li><li>Psicóloga</li><li>Outro</li></ul></div></div><p class="caption">Em quatro páginas: sobre quem é a demanda, quem solicita, vínculos, cursos, contato, data, descrição e até cinco fotos ou PDFs do formulário em papel.</p>`,
-    notes: "Para vocês terem ideia do que chega, o formulário tem quatro páginas. O servidor informa sobre quem é a demanda, o vínculo dessa pessoa (aluno, professor, técnico, responsável) e o curso; depois quem está solicitando, com vínculo, curso e contato; a data; o tipo de demanda; a descrição; para qual setor enviar; e até cinco fotos ou PDFs do formulário em papel. Os tipos e os destinos são estes. [Pergunte se alguém já passou por alguma dessas situações.]",
+    notes: "Hoje o campus tem um fluxo de Registro de Demandas do Ensino. Algumas situações acontecem: um aluno quebrou uma janela, precisou sair fora do horário, um professor precisa se ausentar por motivo de saúde. Quando algo assim acontece, um servidor registra a demanda num formulário de quatro páginas: sobre quem é a demanda, o vínculo dessa pessoa (aluno, professor, técnico, responsável) e o curso; depois quem está solicitando, com vínculo, curso e contato; a data; o tipo de demanda; a descrição; para qual setor enviar; e até cinco fotos ou PDFs do formulário em papel. Os tipos e os destinos são estes. [Pergunte se alguém já passou por alguma dessas situações.]",
     check: "Listas conferidas com as capturas do formulário (meetings/kickoff_meeting/FORM1 a FORM4). O destino é “Coordenações de Curso”, não “Coordenação de Ensino” como no roteiro. Detalhes que rendem perguntas ao público: a data do registro é digitada à mão, o curso é opcional e a conta Google de quem envia é registrada."
+  },
+  {
+    id: "fluxo-atual", chapter: "Nosso problema real",
+    title: "Como a demanda chega ao setor", terms: ["Formulário","Google Apps Script","Autenticação"],
+    html: `<h2>Como a demanda<br>chega ao setor</h2><ol class="flow"><li>Servidor<small>Acesso institucional</small></li><li>Formulário<small>Pessoa, tipo e relato</small></li><li>Apps Script<small>Direciona o envio</small></li><li>Setor<small>E-mail e painel</small></li></ol><p class="caption">Registro, encaminhamento e tratamento já fazem parte do processo atual.</p>`,
+    notes: "E o que acontece depois do envio? Primeiro, o formulário só aceita envios de contas Google autenticadas com e-mail @osorio.ifrs.edu.br: é o padrão de segurança para evitar respostas indesejadas. Ao enviar, um fluxo em Google Apps Script lê o campo “Enviar para” e manda um e-mail com todas as informações para o setor indicado. Ao mesmo tempo, alimenta um painel administrativo.",
+    check: "Fluxo resumido do roteiro, não resultado de auditoria do sistema. O formulário usa contas Google do domínio @osorio.ifrs.edu.br. O usuário informa a pessoa envolvida, vínculos, cursos, demandante e contato, data, tipo, descrição, destino e anexo. Apps Script associa o destino a um e-mail e alimenta o painel."
   },
   {
     id: "painel-atual", chapter: "Nosso problema real",

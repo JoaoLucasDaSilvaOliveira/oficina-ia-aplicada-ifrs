@@ -56,7 +56,7 @@ colunas à largura e é medido após renderização, carregamento das fontes,
 mudança de tamanho e troca de exemplo. Uma escala uniforme ajusta o conteúdo
 completo à largura e altura disponíveis, sem rolagem ou cortes.
 
-Os slides 14 e 15 são cenas em 3D feitas só com CSS (perspectiva e
+Os slides 13 e 14 são cenas em 3D feitas só com CSS (perspectiva e
 preserve-3d), sem biblioteca. A casa se monta uma etapa por vez, no ritmo do
 apresentador. Primeiro, a câmera mostra de cima a planta (cômodos e cota)
 sendo desenhada no chão. Depois desce para a perspectiva: a fundação e as

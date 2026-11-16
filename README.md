@@ -75,7 +75,7 @@ licença MIT), sem internet.
 
 Os endereços ficam em `WORKSHOP_LINKS`, no início de `slides.js`. O endereço
 do dicionário assume a publicação em
-`https://joaolucasdasilvaoliveira.github.io/oficina-ia-aplicada/dicionario/`.
+`https://joaolucasdasilvaoliveira.github.io/oficina-ia-aplicada-ifrs/dicionario/`.
 Se o repositório tiver outro nome, troque ali e os QR codes se ajustam sozinhos.
 Para incluir um termo, adicione-o a `terms` no slide e a definição em
 `glossario.js`; o teste falha se faltar alguma definição.
