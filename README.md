@@ -1,7 +1,7 @@
 # Além do Vibecoding
 
 Apresentação web da oficina de IA aplicada de João Lucas, IFRS Campus Osório.
-São 35 slides, baseados no roteiro fornecido, com a fala do apresentador e exemplos interativos.
+São 36 slides, baseados no roteiro fornecido, com a fala do apresentador e exemplos interativos.
 
 Abra `index.html` no navegador. Não há instalação, build, CDN ou dependência de
 internet. Os arquivos devem permanecer juntos, incluindo a pasta `assets`.
@@ -31,7 +31,7 @@ cronômetro (clique ou T para zerar). As setas e os botões dessa janela control
 a projeção. Se o navegador bloquear a janela, permita pop-ups para a página.
 Funciona também no `apresentacao.html` único (a mesma página com `?presenter`).
 
-Os slides 20 e 30 alternam suas opções a cada 3 segundos. A troca de slide
+Os slides 21 e 31 alternam suas opções a cada 3 segundos. A troca de slide
 encerra o ciclo; voltar a ele reinicia a primeira opção. A troca de aba pausa
 o ciclo até a apresentação voltar a ficar visível. Movimento reduzido troca
 os deslocamentos por um fade curto, mantendo a alternância do conteúdo.
@@ -46,7 +46,8 @@ podem deixar o texto menor; para projetar, prefira a orientação horizontal.
 - `slides.js`: conteúdo, notas, referências, IDs e termos por slide.
 - `styles.css`: layout, cores, tipografia e adaptação para celular.
 - `app.js`: navegação, revelações e demonstrações.
-- `assets`: fontes Open Sans e respectiva licença OFL.
+- `assets`: fontes Open Sans e licença OFL, gerador de QR code e foto do slide 2.
+- `glossario.js` e `dicionario/`: o dicionário do público.
 
 Os exemplos de requisitos do produto são identificados como propostas a validar.
 O exemplo de referência/cópia é uma simulação em JavaScript do caso didático em Go.
@@ -58,13 +59,26 @@ Publique a pasta com `index.html` na origem escolhida nas configurações de Pag
 do seu repositório. Os caminhos são relativos e funcionam em um endereço como
 `https://usuario.github.io/repositorio/`. Esta entrega não fez commit, push ou deploy.
 
-## Próxima etapa: dicionário
+## Dicionário do público
 
-Cada slide possui um `id` estável e uma lista `terms`. A URL guarda esse ID no
-fragmento e a navegação emite `workshop:slidechange`, com `{ id, index, title, terms }`.
-Esse evento é local. Ainda não há dicionário, QR code, sessão de apresentação ou
-sincronização entre dispositivos. GitHub Pages hospeda arquivos estáticos; o
-acompanhamento ao vivo precisará de um serviço compartilhado de estado.
+`dicionario/` é uma página estática para celular, com os termos de cada slide
+explicados (definições em `glossario.js`, termos por slide no campo `terms` de
+`slides.js`). Ela tem busca (aceita sinônimos, como "edge case"), navegação por
+slide e uma lista de A a Z. O endereço guarda a consulta: `dicionario/#<id>`
+abre os termos do slide com esse ID, e `dicionario/#termos` abre a lista toda.
+
+Na apresentação, o slide 3 mostra o QR code grande do dicionário. Nos demais
+slides, um QR pequeno no canto inferior esquerdo abre os termos daquele slide.
+O slide 2 traz QR codes do GitHub e do LinkedIn. Os QR codes são gerados no
+navegador por `assets/qrcode.js` (qrcode-generator 1.4.4, de Kazuhiko Arase,
+licença MIT), sem internet.
+
+Os endereços ficam em `WORKSHOP_LINKS`, no início de `slides.js`. O endereço
+do dicionário assume a publicação em
+`https://joaolucasdasilvaoliveira.github.io/oficina-ia-aplicada/dicionario/`.
+Se o repositório tiver outro nome, troque ali e os QR codes se ajustam sozinhos.
+Para incluir um termo, adicione-o a `terms` no slide e a definição em
+`glossario.js`; o teste falha se faltar alguma definição.
 
 ## Verificação
 

@@ -31,7 +31,7 @@ vermelho pontua o título e o progresso. Não usar grids de cartões como padrã
 O rodapé se limita à navegação, tela cheia e pausa opcional das demonstrações.
 A fala e os avisos ficam na janela do apresentador (tecla N), que não é projetada.
 Não há sidebar, ajuda, notas projetadas ou instrução de navegação. Os slides
-continuam sob controle do apresentador; só as opções dos exemplos 20 e 30
+continuam sob controle do apresentador; só as opções dos exemplos 21 e 31
 alternam automaticamente, a cada 3 segundos. Os destaques vermelhos são
 seletivos e ficam em fundo branco. Em fundo verde, todos os textos são brancos.
 
@@ -56,7 +56,7 @@ colunas à largura e é medido após renderização, carregamento das fontes,
 mudança de tamanho e troca de exemplo. Uma escala uniforme ajusta o conteúdo
 completo à largura e altura disponíveis, sem rolagem ou cortes.
 
-Os slides 13 e 14 são cenas em 3D feitas só com CSS (perspectiva e
+Os slides 14 e 15 são cenas em 3D feitas só com CSS (perspectiva e
 preserve-3d), sem biblioteca. A casa se monta uma etapa por vez, no ritmo do
 apresentador. Primeiro, a câmera mostra de cima a planta (cômodos e cota)
 sendo desenhada no chão. Depois desce para a perspectiva: a fundação e as
@@ -80,3 +80,11 @@ As trocas automáticas usam somente opacidade por 260ms, mantendo a leitura
 estável. A curva de entrada é cubic-bezier(0.23,1,0.32,1). Com preferência por
 movimento reduzido, tudo vira um fade de opacidade de 200ms, sem deslocamento
 nem sequência. Não há bibliotecas de animação ou recursos remotos.
+
+## Dicionário e QR codes
+
+O slide 3 existe só para o QR code do dicionário. Nos demais, um QR pequeno no
+rodapé, à esquerda, abre os termos daquele slide; ele usa correção de erro L
+para ficar menos denso e foi conferido com leitor de QR. O dicionário segue a
+mesma identidade (Open Sans, verde e vermelho do IF), em uma coluna para
+celular, com a barra de troca de slide fixa no topo durante a rolagem.

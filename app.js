@@ -202,6 +202,57 @@
     target.animate([{opacity: 0, offset: 0}], {duration: SWAP_MS, easing: "ease"});
   }
 
+  /* ---------- QR codes e links (dicionário, GitHub, LinkedIn) ---------- */
+
+  const qrCache = new Map();
+  // Gera o QR localmente (assets/qrcode.js), sem depender de internet.
+  // level "L" deixa o QR pequeno do canto menos denso; os grandes usam "M".
+  function qrSvg(text, level = "M") {
+    if (typeof qrcode !== "function") return "";
+    const key = `${level}:${text}`;
+    if (!qrCache.has(key)) {
+      const code = qrcode(0, level);
+      code.addData(text);
+      code.make();
+      const size = code.getModuleCount();
+      let path = "";
+      for (let row = 0; row < size; row++) {
+        for (let column = 0; column < size; column++) {
+          if (code.isDark(row, column)) path += `M${column} ${row}h1v1h-1z`;
+        }
+      }
+      qrCache.set(key, `<svg viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges" aria-hidden="true"><path d="${path}"/></svg>`);
+    }
+    return qrCache.get(key);
+  }
+
+  const linkFor = key => (typeof WORKSHOP_LINKS === "object" ? WORKSHOP_LINKS[key] : undefined);
+
+  function renderLinks() {
+    slideElement.querySelectorAll("[data-qr]").forEach(element => {
+      const url = linkFor(element.dataset.qr);
+      if (url) element.innerHTML = qrSvg(url);
+    });
+    slideElement.querySelectorAll("[data-link]").forEach(element => {
+      const url = linkFor(element.dataset.link);
+      if (url) element.href = url;
+    });
+    slideElement.querySelectorAll("[data-link-text]").forEach(element => {
+      const url = linkFor(element.dataset.linkText);
+      if (url) element.textContent = url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    });
+    // QR do canto: abre o dicionário direto nos termos do slide atual.
+    const corner = document.querySelector("#slide-qr");
+    const base = linkFor("dicionario");
+    const slide = SLIDES[index];
+    corner.hidden = !base || slide.id === "dicionario" || typeof qrcode !== "function";
+    if (!corner.hidden) {
+      const url = `${base}#${slide.id}`;
+      corner.href = url;
+      corner.querySelector(".qr").innerHTML = qrSvg(url, "L");
+    }
+  }
+
   function updateNavigation() {
     const totalReveals = slideElement.querySelectorAll(".reveal").length;
     previous.disabled = index === 0 && revealCount === 0;
@@ -220,6 +271,7 @@
     slideElement.className = `slide ${slide.className || ""}`;
     slideElement.innerHTML = `<div class="slide-content">${slide.html}</div>`;
     slideElement.dataset.slideId = slide.id;
+    renderLinks();
     document.body.dataset.tone = slide.className === "statement" ? "green" : "white";
     slideElement.setAttribute("aria-label", `Slide ${index + 1} de ${SLIDES.length}: ${slide.title}`);
     slideElement.querySelectorAll(".reveal").forEach(element => {

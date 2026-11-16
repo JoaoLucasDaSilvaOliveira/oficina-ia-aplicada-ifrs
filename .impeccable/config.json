@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "open sans",
+        "createdAt": "2026-11-16T00:26:53.417Z",
+        "reason": "Identidade visual do IF: o Manual de Aplicação da Marca IF (2015) indica Open Sans para textos; documentado no README e em docs/DESIGN.md"
+      }
+    ]
+  }
+}

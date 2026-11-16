@@ -1,10 +1,19 @@
-/* O ID de cada slide é estável: será a referência do dicionário na próxima etapa.
+/* O ID de cada slide é estável: o dicionário do público usa esse ID (dicionario/#<id>).
    notes: a fala do apresentador (aparece na janela do apresentador, tecla N).
-   check: avisos de precisão para revisar antes de falar. */
+   check: avisos de precisão para revisar antes de falar.
+   terms: termos do slide; cada um precisa ter definição em glossario.js. */
+
+/* Endereços dos QR codes. Ajuste "dicionario" se o repositório do GitHub Pages tiver outro nome. */
+const WORKSHOP_LINKS = {
+  "dicionario": "https://joaolucasdasilvaoliveira.github.io/oficina-ia-aplicada/dicionario/",
+  "github": "https://github.com/JoaoLucasDaSilvaOliveira",
+  "linkedin": "https://www.linkedin.com/in/jo%C3%A3o-lucas-da-silva-oliveira"
+};
+
 const SLIDES = [
   {
     id: "abertura", chapter: "Oficina de IA aplicada", className: "cover",
-    title: "Além do Vibecoding", terms: ["IA generativa","Vibecoding"],
+    title: "Além do Vibecoding", terms: ["Vibe coding","IA generativa"],
     html: `<span class="cover-index" aria-hidden="true">{ }</span>
       <h1>Além do<br>Vibecoding</h1>
       <div class="cover-bottom"><p class="lead">Da conversa com o cliente<br>às decisões de software.</p>
@@ -14,21 +23,28 @@ const SLIDES = [
   },
   {
     id: "apresentacao", chapter: "Quem está falando", className: "person",
-    title: "João Lucas", terms: ["Backend","Requisito"],
-    html: `<div class="split"><div><h2>João<br>Lucas.</h2></div><div class="bio"><p class="lead">Aluno de ADS.<br>Desenvolvedor independente.<br>Foco em backend.</p><p class="caption">Ouvir o cliente, entender o negócio e transformar necessidades em software.</p><div class="links"><a href="https://github.com/JoaoLucasDaSilvaOliveira" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/jo%C3%A3o-lucas-da-silva-oliveira" target="_blank" rel="noopener noreferrer">LinkedIn</a></div></div></div>`,
+    title: "João Lucas", terms: ["Desenvolvimento backend","Requisito","GitHub","LinkedIn"],
+    html: `<div class="split person-grid"><div><img class="avatar" src="assets/joao-lucas.jpg" alt="Foto de João Lucas" width="240" height="240"><h2>João<br>Lucas.</h2><p class="lead">Aluno de ADS.<br>Desenvolvedor independente.<br>Foco em backend.</p><p class="caption">Ouvir o cliente, entender o negócio e transformar necessidades em software.</p></div><div class="profiles"><a class="profile" data-link="github" target="_blank" rel="noopener noreferrer"><span class="qr" data-qr="github"></span><span class="profile-text"><svg class="profile-logo" viewBox="0 0 16 16" aria-hidden="true"><path fill="#151915" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><strong>GitHub</strong><span>JoaoLucasDaSilvaOliveira</span></span></a><a class="profile" data-link="linkedin" target="_blank" rel="noopener noreferrer"><span class="qr" data-qr="linkedin"></span><span class="profile-text"><svg class="profile-logo" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#0a66c2"/><path fill="#fff" d="M5.3 9.4h2.9V19H5.3zM6.75 4.8a1.7 1.7 0 110 3.4 1.7 1.7 0 010-3.4zM10 9.4h2.8v1.3c.4-.75 1.35-1.55 2.8-1.55 3 0 3.55 1.95 3.55 4.5V19h-2.9v-4.7c0-1.1 0-2.55-1.55-2.55s-1.8 1.2-1.8 2.45V19H10z"/></svg><strong>LinkedIn</strong><span>joão-lucas-da-silva-oliveira</span></span></a></div></div>`,
     notes: "Me chamo João Lucas, sou aluno do sexto semestre do Superior em ADS. Atuo como desenvolvedor independente, mais focado em backend, com projetos próprios no estilo do que vamos desenvolver hoje. Meu trabalho gira em torno de ouvir o cliente, entender as dores dele e o negócio, e usar técnicas de engenharia de software para transformar esse depoimento em requisitos e, depois, em um sistema de fato. [Abra o GitHub e o LinkedIn, se quiser.]",
-    check: "Os links abrem em nova aba: GitHub e LinkedIn. Teste os dois com a internet da sala antes de começar."
+    check: "Os QR codes abrem os perfis no celular da plateia; os cards também são links. Teste os dois com a internet da sala antes de começar."
+  },
+  {
+    id: "dicionario", chapter: "Para começar",
+    title: "Dicionário da oficina", terms: ["QR code"],
+    html: `<div class="split qr-slide"><div><h2>Dicionário<br>da oficina.</h2><p class="lead">Cada termo desta noite,<br>explicado no seu celular.</p><p class="caption">O código no canto de cada slide abre os termos daquele slide.</p></div><div class="qr-big"><span class="qr qr-large" data-qr="dicionario"></span><span class="qr-url" data-link-text="dicionario"></span></div></div>`,
+    notes: "Antes de começar: apontem a câmera do celular para este código. É o dicionário da oficina, com cada termo técnico que vou usar hoje, explicado. [Espere uns segundos.] E não precisa correr: em todo slide tem um código pequeno no canto que abre direto os termos daquele slide.",
+    check: "Confira antes se o endereço do dicionário está publicado no GitHub Pages (WORKSHOP_LINKS.dicionario no slides.js)."
   },
   {
     id: "funcionario", chapter: "Para começar", className: "question",
-    title: "Ganhei alguns funcionários", terms: ["Agente de IA"],
+    title: "Ganhei alguns funcionários", terms: ["Agente de IA","Ferramentas agênticas"],
     html: `<h2>Ganhei alguns<br>funcionários.</h2><p class="lead">Não tiram férias.<br>Não reclamam de nenhuma tarefa.<br>Escrevem código mais rápido que eu.</p><p class="lead reveal" style="margin-top:28px">Só têm um problema: sem orientação,<br>erram <span class="keyword">na mesma velocidade.</span></p>`,
     notes: "Sempre trabalhei sozinho nos meus projetos, como a maioria aqui que já tentou tocar alguma coisa. Mas ultimamente ganhei alguns funcionários. Eles não tiram férias, não reclamam de nenhuma tarefa e escrevem código muito mais rápido do que eu. [Revele.] Só têm um pequeno problema: se eu não souber orientar e revisar o trabalho deles, fazem uma quantidade impressionante de besteira, na mesma velocidade. Esses funcionários são os agentes de IA.",
     check: "Evite dizer que os agentes são mais inteligentes ou mais assertivos que você: isso contradiz o argumento de que eles precisam de orientação e revisão."
   },
   {
     id: "pergunta-ia", chapter: "Para começar", className: "question",
-    title: "O que você já construiu com IA?", terms: ["Agente de IA"],
+    title: "O que você já construiu com IA?", terms: ["Ferramentas agênticas","OpenAI","Anthropic"],
     html: `<h2>O que você já<br>construiu com IA?</h2><p class="caption">Como fez? E como descobriu se estava funcionando?</p><div class="tool-names"><span>ChatGPT / Codex</span><span>Claude</span><span>Gemini</span><span>Outros?</span></div>`,
     notes: "Alguém aqui já teve alguma experiência, por mais superficial que seja, com ferramentas agênticas como Claude, ChatGPT/Codex, Gemini ou outra? [Espere duas ou três respostas.] O que você fez? Como fez? Sente que vibecodou em algum momento? E como descobriu se estava funcionando?",
     check: "Pare e escute duas ou três respostas. Pergunte se a pessoa consegue explicar o que foi gerado e como verificou o resultado. Evite transformar a pergunta em um teste de conhecimento."
@@ -42,14 +58,14 @@ const SLIDES = [
   },
   {
     id: "terceirizar", chapter: "Uso crítico de IA",
-    title: "O risco: terceirizar o pensamento", terms: ["Pensamento crítico","Atrofia cognitiva"],
+    title: "O risco: terceirizar o pensamento", terms: ["Atrofia cognitiva","Pensamento crítico"],
     html: `<h2>O risco: <span class="keyword">terceirizar</span><br>o pensamento.</h2><p class="lead">Usar a IA no lugar do raciocínio,<br>e não para ampliá-lo.</p><p class="caption reveal">Há quem chame isso de atrofia cognitiva. É uma metáfora para um hábito, não um diagnóstico.</p>`,
     notes: "E isso traz um risco que talvez você ainda não tenha percebido. Algumas pessoas chamam de atrofia cognitiva: o cérebro se acostuma, e até gosta, de terceirizar o pensamento crítico e as decisões difíceis. Em vez de usar a IA para potencializar o raciocínio, começamos a delegar decisões que deveríamos compreender e questionar. [Revele.] Não é um diagnóstico, é um hábito. E é aqui que entra o famoso vibe coding: vibecodar, por si só, não causa isso; terceirizar demais o esforço de pensar, pode causar.",
     check: "Um estudo de 2025 da Microsoft Research com a Carnegie Mellon (319 profissionais) associou mais confiança na IA a menos pensamento crítico autorrelatado. Isso não demonstra dano cerebral nem perda permanente: trate “atrofia cognitiva” como metáfora."
   },
   {
     id: "vibecoding", chapter: "Uso crítico de IA",
-    title: "Vibecoding", terms: ["Vibecoding","IA generativa","Diff"],
+    title: "Vibecoding", terms: ["Vibe coding","Andrej Karpathy","OpenAI","Lovable","Low-code e no-code","IA generativa"],
     html: `<h2>Vibecoding</h2><p class="lead definition">Gerar software por comandos em linguagem natural e seguir pelo resultado, sem acompanhar de perto o código produzido.</p><p class="caption">O termo foi popularizado por Andrej Karpathy em fevereiro de 2025.</p><p class="caption reveal">Usar IA e entender o que se entrega continua exigindo trabalho de engenharia.</p>`,
     notes: "Vibe coding tem alguns significados. O termo foi popularizado em fevereiro de 2025 por Andrej Karpathy, um dos fundadores da OpenAI e ex-diretor de IA da Tesla. Ele descrevia um jeito de programar se entregando ao fluxo: pedir em linguagem natural e aceitar o resultado sem acompanhar o código. O termo ganhou força com plataformas como a Lovable, que prometem criar um site a partir de uma ideia, e tomou o mundo low/no-code. Hoje, costuma descrever criar um sistema com dependência total da IA, sem revisar o que foi produzido. [Revele.] Mas usar IA para programar não é, automaticamente, vibe coding.",
     check: "Diferencie o uso amplo do termo de sua descrição original, em que Karpathy deixava de ler os diffs e o código ultrapassava sua compreensão. Ele foi membro fundador da OpenAI, não seu único fundador. O termo não foi criado pela Lovable. Não equipare toda programação assistida por IA a vibecoding.",
@@ -57,7 +73,7 @@ const SLIDES = [
   },
   {
     id: "escada", chapter: "Uso crítico de IA",
-    title: "Uma nova camada de abstração?", terms: ["Abstração","Linguagem de programação"],
+    title: "Uma nova camada de abstração?", terms: ["Abstração","Linguagem de programação","Bare metal","Linguagem natural"],
     html: `<h2>Uma nova camada<br>de abstração?</h2><ol class="stairs"><li><strong>Código de máquina</strong><small>01001000 01101001</small></li><li><strong>Assembly</strong><small>MOV, ADD, JMP</small></li><li><strong>C</strong><small>Memória e ponteiros</small></li><li><strong>Java · Go · Python</strong><small>Objetos e bibliotecas</small></li><li class="stairs-top"><strong>Linguagem natural</strong><small>Com um agente de IA</small></li></ol><p class="caption">Quanto mais à direita, mais perto da linguagem humana.</p>`,
     notes: "Durante o curso aprendemos sobre níveis de linguagem. Quanto mais baixo, mais perto das instruções de máquina; quanto mais alto, mais perto da linguagem humana. Por essa lógica, programar com IA seria o degrau mais alto: em vez de escrever cada instrução, descrevemos objetivos e restrições, e um modelo transforma isso em código. Em tese, não há problema nisso. Só que esse último degrau tem uma diferença importante.",
     check: "C, Java, Go e Python são todas linguagens de alto nível; a escada mostra a distância da máquina, não uma classificação formal. Fortran também é de alto nível. Linguagem natural não tem semântica formal e determinística: é uma analogia."
@@ -73,28 +89,28 @@ const SLIDES = [
   },
   {
     id: "mudanca-escopo", chapter: "Uso crítico de IA",
-    title: "Mudança de escopo", terms: ["Code review","Engenharia de software"],
+    title: "Mudança de escopo", terms: ["Product Owner","Product Manager","Tech Lead","Desenvolvedor sênior","Desenvolvedor júnior","Code review"],
     html: `<h2>Mudança de escopo.</h2><div class="split"><div class="contrast"><h3>Antes</h3><p>Receber a tarefa,<br>escrever o código,<br>pedir revisão.</p></div><div class="contrast positive reveal"><h3>Agora</h3><p>Orientar o agente,<br>revisar o resultado,<br>responder pela entrega.</p></div></div><p class="caption">Sozinho, você acumula papéis que numa equipe ficam distribuídos.</p>`,
     notes: "Hoje é incorreto dizer que vibecodar é só não olhar o código. Existem muitas formas de revisão, inclusive com agentes: um agente lê o contexto e codifica, outro faz o code review com critérios definidos antes. Esse desenvolvedor é um vibe coder? Eu não diria. Ele só mudou de escopo. Em projetos maiores, as responsabilidades ficam distribuídas: alguém entende o produto, alguém organiza prioridades, alguém define a arquitetura, desenvolvedores implementam e outros ajudam a garantir a qualidade. [Revele.] Quando trabalho sozinho, assumo várias dessas funções. Os agentes me deixam delegar parte da implementação, dos testes e das revisões, e concentrar atenção na modelagem, nas decisões e na validação. A IA não substituiu uma equipe; ampliou minha capacidade de execução.",
     check: "PO, PM e tech lead não formam uma hierarquia universal, e desenvolvedores também decidem arquitetura e modelagem. Evite apresentar a cadeia PO → PM → Tech Lead → sênior → júnior como regra."
   },
   {
     id: "responsabilidade", chapter: "Uso crítico de IA",
-    title: "Seu papel no processo", terms: ["Code review","Critério de aceite","Pipeline"],
+    title: "Seu papel no processo", terms: ["Pipeline","Code review","Critério de aceite"],
     html: `<h2>Seu papel no processo</h2><ol class="flow"><li>Definir<small>Problema e critérios</small></li><li>Delegar<small>Contexto e limites</small></li><li>Revisar<small>Código e comportamento</small></li><li>Validar<small>Evidências da entrega</small></li></ol><p class="lead reveal">Um agente pode revisar.<br>Alguém continua responsável por aceitar.</p>`,
     notes: "Na prática, meu papel vira esta esteira: definir o problema e os critérios, delegar com contexto e limites, revisar o código e o comportamento, e validar com evidências. [Revele.] Um agente pode até revisar. Mas alguém continua responsável por aceitar.",
     check: "Explique que a organização das equipes varia. PO, PM, tech lead e revisores têm responsabilidades diferentes e não formam necessariamente uma hierarquia linear. A esteira acima representa o trabalho, não um organograma. Revisão por IA também precisa de avaliação e testes."
   },
   {
     id: "decisao", chapter: "Uso crítico de IA", className: "statement",
-    title: "Decisão", terms: ["Decisão técnica","Trade-off"],
+    title: "Decisão", terms: ["Decisão técnica","CRUD"],
     html: `<h2>Decisão.</h2><p class="lead">A IA pode escrever um CRUD em segundos.<br>Alguém precisa saber se ele deveria existir daquele jeito.</p><p class="lead reveal" style="margin-top:32px">O problema não é ter um funcionário que erra.<br>É ter um funcionário que erra e um responsável<br>que não sabe identificar o erro.</p>`,
     notes: "E essa é a palavra mais importante da noite: decisão. É a decisão que não podemos terceirizar para o agente. O que diferencia um bom desenvolvedor não é só a capacidade de implementar uma solução, mas de escolher, justificar e avaliar essa solução. A IA pode escrever um CRUD em segundos, mas alguém precisa saber se aquele CRUD deveria existir daquele jeito. [Revele.] O problema não é ter um funcionário que erra. É ter um funcionário que erra e um responsável que não sabe identificar o erro. [Pausa antes de seguir.]",
     check: "Essa é a ideia central da oficina. O problema é não reconhecer o erro da solução que se aceitou. Escolher, justificar e avaliar fazem parte do desenvolvimento. Faça uma pausa antes de seguir para as ferramentas."
   },
   {
     id: "casa", chapter: "Como se constrói um sistema",
-    title: "Um sistema se constrói como uma casa", terms: ["Documentação","Especificação","Arquitetura","Entrega"],
+    title: "Um sistema se constrói como uma casa", terms: ["Documentação","Especificação","Arquitetura de software","Entrega"],
     html: `<h2>Um sistema se constrói<br>como uma casa.</h2><div class="build"><ol class="build-steps"><li class="reveal" data-build="planta"><strong>Planta</strong><span>Documentação</span></li><li class="reveal" data-build="fundacao"><strong>Fundação</strong><span>Especificação e arquitetura</span></li><li class="reveal" data-build="paredes"><strong>Paredes</strong><span>Implementação</span></li><li class="reveal" data-build="acabamento"><strong>Acabamento</strong><span>Interface</span></li><li class="reveal" data-build="vistoria"><strong>Vistoria</strong><span>Testes e critérios de aceite</span></li><li class="reveal" data-build="chaves"><strong>Chaves</strong><span>Entrega da v1.0.0</span></li></ol><div class="build-scene"><div class="stage3d house" data-width="520" style="aspect-ratio:520/420" role="img" aria-label="Uma casa em 3D construída em etapas: planta, fundação, paredes, acabamento, vistoria e entrega." data-stage=""><div class="world"><div class="at" style="--x:0px;--y:0.5px;--z:0px"><i class="ground3" style="width:620px;height:420px;margin:-210px 0 0 -310px"></i></div><div class="at" style="--x:0px;--y:-0.4px;--z:0px"><svg class="plan" viewBox="-150 -110 300 250" aria-hidden="true">
 <path data-part="planta" data-anim="draw" data-delay="0" pathLength="1" d="M-120 80 V-80 H120 V80"/>
 <path data-part="planta" data-anim="draw" data-delay="200" pathLength="1" d="M-120 80 H-20 M20 80 H120"/>
@@ -110,28 +126,28 @@ const SLIDES = [
   },
   {
     id: "predio", chapter: "Como se constrói um sistema",
-    title: "E quando o sistema cresce?", terms: ["Monólito modular","Microsserviços","Arquitetura"],
+    title: "E quando o sistema cresce?", terms: ["Monólito modular","Microsserviços","Arquitetura de software"],
     html: `<h2>E quando o sistema cresce?</h2><div class="split towns"><div class="reveal" data-build="predio"><div class="stage3d tower3" data-width="300" style="aspect-ratio:300/290" role="img" aria-label="Um prédio em 3D: andares empilhados sobre a mesma fundação."><div class="world"><div class="at" style="--x:0px;--y:0.5px;--z:0px"><i class="ground3" style="width:300px;height:220px;margin:-110px 0 0 -150px"></i></div><div class="at" data-part="predio" data-anim="rise" data-delay="0" style="--x:0px;--y:0px;--z:0px"><div class="anim"><div class="box slab3" style="--w:172px;--h:10px;--d:132px"><i class="face f"></i><i class="face k"></i><i class="face l"></i><i class="face r"></i><i class="face t"></i></div></div></div><div class="at" data-part="predio" data-anim="drop" data-delay="180" style="--x:0px;--y:-10px;--z:0px"><div class="anim"><div class="box floor ground-floor" style="--w:150px;--h:46px;--d:110px"><i class="face f"></i><i class="face k"></i><i class="face l"></i><i class="face r"></i><i class="face t"></i></div><div class="at" style="--x:-40px;--y:-25px;--z:55.6px"><i class="plane door3" style="width:16px;height:30px;margin:-15px 0 0 -8px;"></i></div><div class="at" style="--x:40px;--y:-25px;--z:55.6px"><i class="plane door3" style="width:16px;height:30px;margin:-15px 0 0 -8px;"></i></div></div></div><div class="at" data-part="predio" data-anim="drop" data-delay="330" style="--x:0px;--y:-56px;--z:0px"><div class="anim"><div class="box floor" style="--w:150px;--h:46px;--d:110px"><i class="face f"></i><i class="face k"></i><i class="face l"></i><i class="face r"></i><i class="face t"></i></div></div></div><div class="at" data-part="predio" data-anim="drop" data-delay="480" style="--x:0px;--y:-102px;--z:0px"><div class="anim"><div class="box floor" style="--w:150px;--h:46px;--d:110px"><i class="face f"></i><i class="face k"></i><i class="face l"></i><i class="face r"></i><i class="face t"></i></div></div></div><div class="at" data-part="predio" data-anim="drop" data-delay="630" style="--x:0px;--y:-148px;--z:0px"><div class="anim"><div class="box floor" style="--w:150px;--h:46px;--d:110px"><i class="face f"></i><i class="face k"></i><i class="face l"></i><i class="face r"></i><i class="face t"></i></div></div></div><div class="at" data-part="predio" data-anim="drop" data-delay="800" style="--x:0px;--y:-194px;--z:0px"><div class="anim"><div class="box roofslab" style="--w:160px;--h:9px;--d:120px"><i class="face f"></i><i class="face k"></i><i class="face l"></i><i class="face r"></i><i class="face t"></i></div></div></div></div></div><h3>Prédio · monólito modular</h3><p>Vários módulos, uma estrutura,<br>uma entrega.</p></div><div class="reveal" data-build="condominio"><div class="stage3d condo3" data-width="300" style="aspect-ratio:300/290" role="img" aria-label="Três casas em 3D, cada uma com sua fundação, ligadas por uma rua."><div class="world"><div class="at" style="--x:0px;--y:0.5px;--z:0px"><i class="ground3" style="width:400px;height:300px;margin:-150px 0 0 -200px"></i></div><div class="at" style="--x:0px;--y:-0.4px;--z:0px"><svg class="plan road3" viewBox="-150 -110 300 250" aria-hidden="true"><path data-part="condominio" data-anim="draw" data-delay="620" pathLength="1" d="M-95 34 V66 H95 V34 M0 34 V66"/></svg></div><div class="at" data-part="condominio" data-anim="drop" data-delay="0" style="--x:-95px;--y:0px;--z:0px"><div class="anim"><div class="at" style="--x:0px;--y:0px;--z:0px"><div class="box slab3" style="--w:72px;--h:6px;--d:62px"><i class="face f"></i><i class="face k"></i><i class="face l"></i><i class="face r"></i><i class="face t"></i></div></div><div class="at" style="--x:0px;--y:-6px;--z:0px"><div class="box course" style="--w:56px;--h:40px;--d:46px"><i class="face f"></i><i class="face k"></i><i class="face l"></i><i class="face r"></i><i class="face t"></i></div></div><div class="at" style="--x:0px;--y:-46px;--z:0px"><div class="at" style="--x:0px;--y:-14px;--z:15px"><i class="plane roofplane red" style="width:68px;height:41.04px;margin:-20.52px 0 0 -34px;transform:rotateX(46.97deg);"></i></div><div class="at" style="--x:0px;--y:-14px;--z:-15px"><i class="plane roofplane back red" style="width:68px;height:41.04px;margin:-20.52px 0 0 -34px;transform:rotateY(180deg) rotateX(46.97deg);"></i></div><div class="at" style="--x:28px;--y:-14px;--z:0px"><i class="plane gable" style="width:46px;height:28px;margin:-14px 0 0 -23px;transform:rotateY(90deg);clip-path:polygon(50% 0,100% 76.67%,100% 100%,0 100%,0 76.67%);"></i></div><div class="at" style="--x:-28px;--y:-14px;--z:0px"><i class="plane gable" style="width:46px;height:28px;margin:-14px 0 0 -23px;transform:rotateY(-90deg);clip-path:polygon(50% 0,100% 76.67%,100% 100%,0 100%,0 76.67%);"></i></div></div><div class="at" style="--x:0px;--y:-19px;--z:23.6px"><i class="plane door3" style="width:14px;height:26px;margin:-13px 0 0 -7px;"></i></div></div></div><div class="at" data-part="condominio" data-anim="drop" data-delay="160" style="--x:0px;--y:0px;--z:0px"><div class="anim"><div class="at" style="--x:0px;--y:0px;--z:0px"><div class="box slab3" style="--w:72px;--h:6px;--d:62px"><i class="face f"></i><i class="face k"></i><i class="face l"></i><i class="face r"></i><i class="face t"></i></div></div><div class="at" style="--x:0px;--y:-6px;--z:0px"><div class="box course" style="--w:56px;--h:40px;--d:46px"><i class="face f"></i><i class="face k"></i><i class="face l"></i><i class="face r"></i><i class="face t"></i></div></div><div class="at" style="--x:0px;--y:-46px;--z:0px"><div class="at" style="--x:0px;--y:-14px;--z:15px"><i class="plane roofplane green" style="width:68px;height:41.04px;margin:-20.52px 0 0 -34px;transform:rotateX(46.97deg);"></i></div><div class="at" style="--x:0px;--y:-14px;--z:-15px"><i class="plane roofplane back green" style="width:68px;height:41.04px;margin:-20.52px 0 0 -34px;transform:rotateY(180deg) rotateX(46.97deg);"></i></div><div class="at" style="--x:28px;--y:-14px;--z:0px"><i class="plane gable" style="width:46px;height:28px;margin:-14px 0 0 -23px;transform:rotateY(90deg);clip-path:polygon(50% 0,100% 76.67%,100% 100%,0 100%,0 76.67%);"></i></div><div class="at" style="--x:-28px;--y:-14px;--z:0px"><i class="plane gable" style="width:46px;height:28px;margin:-14px 0 0 -23px;transform:rotateY(-90deg);clip-path:polygon(50% 0,100% 76.67%,100% 100%,0 100%,0 76.67%);"></i></div></div><div class="at" style="--x:0px;--y:-19px;--z:23.6px"><i class="plane door3" style="width:14px;height:26px;margin:-13px 0 0 -7px;"></i></div></div></div><div class="at" data-part="condominio" data-anim="drop" data-delay="320" style="--x:95px;--y:0px;--z:0px"><div class="anim"><div class="at" style="--x:0px;--y:0px;--z:0px"><div class="box slab3" style="--w:72px;--h:6px;--d:62px"><i class="face f"></i><i class="face k"></i><i class="face l"></i><i class="face r"></i><i class="face t"></i></div></div><div class="at" style="--x:0px;--y:-6px;--z:0px"><div class="box course" style="--w:56px;--h:40px;--d:46px"><i class="face f"></i><i class="face k"></i><i class="face l"></i><i class="face r"></i><i class="face t"></i></div></div><div class="at" style="--x:0px;--y:-46px;--z:0px"><div class="at" style="--x:0px;--y:-14px;--z:15px"><i class="plane roofplane gray" style="width:68px;height:41.04px;margin:-20.52px 0 0 -34px;transform:rotateX(46.97deg);"></i></div><div class="at" style="--x:0px;--y:-14px;--z:-15px"><i class="plane roofplane back gray" style="width:68px;height:41.04px;margin:-20.52px 0 0 -34px;transform:rotateY(180deg) rotateX(46.97deg);"></i></div><div class="at" style="--x:28px;--y:-14px;--z:0px"><i class="plane gable" style="width:46px;height:28px;margin:-14px 0 0 -23px;transform:rotateY(90deg);clip-path:polygon(50% 0,100% 76.67%,100% 100%,0 100%,0 76.67%);"></i></div><div class="at" style="--x:-28px;--y:-14px;--z:0px"><i class="plane gable" style="width:46px;height:28px;margin:-14px 0 0 -23px;transform:rotateY(-90deg);clip-path:polygon(50% 0,100% 76.67%,100% 100%,0 100%,0 76.67%);"></i></div></div><div class="at" style="--x:0px;--y:-19px;--z:23.6px"><i class="plane door3" style="width:14px;height:26px;margin:-13px 0 0 -7px;"></i></div></div></div></div></div><h3>Condomínio · microsserviços</h3><p>Cada serviço com sua fundação,<br>conversando pela rede.</p></div></div><p class="caption reveal">Mais casas pedem mais ruas, portões e manutenção. O tamanho do problema decide.</p>`,
     notes: "E quando o sistema cresce? [Revele o prédio.] Um sistema modular é como um prédio: vários apartamentos, cada um com sua porta, mas todos sobre a mesma fundação e a mesma estrutura. É o monólito modular: módulos separados, uma entrega só. [Revele o condomínio.] Microsserviços se parecem mais com um condomínio de casas: cada casa tem sua fundação e suas instalações, e elas se comunicam pelas ruas, que são a rede. [Revele a frase final.] Isso dá independência, mas custa caro: mais ruas, mais portões, mais manutenção. Para a primeira versão do campus, uma casa bem feita basta.",
     check: "Um prédio divide fundação e estrutura, como os módulos de um mesmo deploy: isso é um monólito modular. Microsserviços se parecem mais com um condomínio: cada serviço tem deploy, dados e falhas próprios e se comunica pela rede."
   },
   {
     id: "sdd", chapter: "Da intenção à especificação",
-    title: "Spec-driven development", terms: ["SDD","Especificação","Critério de aceite"],
+    title: "Spec-driven development", terms: ["Spec-Driven Development","Especificação","Critério de aceite"],
     html: `<h2>Spec-driven development</h2><div class="split"><div class="contrast negative"><h3>Uma intenção</h3><p>“Crie um login<br>com cadastro.”</p></div><div class="contrast positive reveal"><h3>Uma especificação</h3><p>Comportamento,<br>regras, restrições<br>e critérios de aceite.</p></div></div><p class="caption">A especificação orienta o que será implementado e como vamos conferir.</p>`,
     notes: "Para trabalhar desse jeito, precisamos conhecer algumas palavras-chave. A primeira é Spec-Driven Development, desenvolvimento orientado por especificação. Você não delega um desejo para a IA; você especifica o que ela deve fazer, com critérios de aceite. Um pedido como “crie um sistema de autenticação com login e cadastro” é uma intenção. [Revele.] Uma especificação diz o comportamento, as regras, as restrições e como vamos conferir. E não é só um prompt mais detalhado: é um documento que orienta a implementação, os testes e a validação.",
     check: "SDD é desenvolvimento orientado por especificação. Mostre que um prompt curto pode iniciar a conversa, mas não resolve as decisões do sistema. O objetivo não é escrever documentação gigantesca; é retirar ambiguidades relevantes."
   },
   {
     id: "requisitos", chapter: "Da intenção à especificação",
-    title: "O que uma especificação precisa dizer", terms: ["RF","RNF","Regra de negócio","Critério de aceite","Argon2id","HTTP 401"],
+    title: "O que uma especificação precisa dizer", terms: ["Requisito funcional","Requisito não funcional","Regra de negócio","Critério de aceite","Argon2id","HTTP 401"],
     html: `<h2>O que precisamos definir?</h2><dl class="rows"><div class="row"><dt><span class="tag-id">RF01</span>Funcional</dt><dd>Autenticar com e-mail e senha.</dd></div><div class="row"><dt><span class="tag-id">RNF01</span>Não funcional</dt><dd>Armazenar senhas com hash Argon2id.</dd></div><div class="row"><dt><span class="tag-id">RN01</span>Regra de negócio</dt><dd>O e-mail deve ser <span class="keyword">único</span> no sistema.</dd></div><div class="row"><dt>Critério de aceite</dt><dd>Credenciais inválidas retornam HTTP 401.</dd></div><div class="row"><dt>Arquitetura</dt><dd>Respeitar os limites entre domínio, aplicação e infraestrutura.</dd></div></dl><p class="caption reveal">E se alguém errar a senha cinquenta vezes? E se o e-mail já estiver cadastrado?</p>`,
     notes: "Por exemplo: implemente conforme a especificação. RF01: o usuário se autentica com e-mail e senha. RNF01: as senhas são armazenadas com Argon2id. RN01: o e-mail é único no sistema. Critério de aceite: credenciais inválidas retornam HTTP 401. Arquitetura: respeitar os limites entre domínio, aplicação e infraestrutura. Parece completo, né? [Revele.] E se alguém errar a senha cinquenta vezes? E se o e-mail já estiver cadastrado? Mesmo uma boa especificação tem lacunas. Achar essas lacunas é o que as skills de investigação vão nos ajudar a fazer.",
     check: "Este é o exemplo didático do roteiro, não uma especificação completa nem a decisão de autenticação do produto do campus. RF descreve uma capacidade; RNF descreve uma qualidade ou restrição; RN expressa uma política do negócio. Um critério de aceite deve ser verificável. Hash não é criptografia reversível."
   },
   {
     id: "agents-md", chapter: "Da intenção à especificação",
-    title: "AGENTS.md", terms: ["AGENTS.md","Arquitetura","Escopo"],
+    title: "AGENTS.md", terms: ["AGENTS.md","Contexto","Escopo"],
     html: `<div class="split"><div><h2>AGENTS.md</h2><p class="lead">Um guia de trabalho<br>para o agente.</p><p class="caption">Onde buscar contexto.<br>Quais limites respeitar.<br>Como verificar a entrega.</p></div><div><div class="code-title">Exemplo de instruções do projeto</div><pre class="code"><code># Antes de implementar
 Leia docs/requisitos.md.
 Pergunte sobre ambiguidades.
@@ -148,14 +164,14 @@ Revise as alterações.</code></pre></div></div>`,
   },
   {
     id: "documentacao", chapter: "Da intenção à especificação",
-    title: "Do relato ao trabalho executável", terms: ["Requisito","Diagrama","Backlog","Issue"],
+    title: "Do relato ao trabalho executável", terms: ["Documentação","Requisito funcional","Requisito não funcional","Diagrama de classes","Diagrama de casos de uso","História de usuário","Backlog","Issue"],
     html: `<h2>Do relato ao trabalho executável</h2><ol class="flow"><li>Conversa<small>Problema e contexto</small></li><li>Requisitos<small>Comportamento esperado</small></li><li>Modelo<small>Conceitos e relações</small></li><li>Tarefas<small>Entregas verificáveis</small></li></ol><p class="lead">Documentar é <span class="keyword">registrar decisões</span> que o próximo passo precisa conhecer.</p><p class="caption">Sem essas decisões, o agente preenche as lacunas por conta própria.</p>`,
     notes: "E a terceira é a documentação. É aqui que o engenheiro de software se destaca do “pedreiro digital”. Uma boa documentação envolve requisitos funcionais e não funcionais, diagramas de classe e de casos de uso, histórias de usuário e os próprios depoimentos e conversas com o cliente. É a etapa que mais evita vibecodar: normalmente você sabe o que quer, tem o depoimento, mas se não destrinchar esse depoimento de forma técnica, o agente preenche as lacunas por conta própria, por falta de decisões.",
     check: "Dê exemplos de documentos: relato do cliente, requisitos, diagramas de classe e de casos de uso, histórias e critérios de aceite. São recursos para esclarecer o trabalho. Não é preciso produzir todos em todo projeto. Um backlog organiza trabalho; issues podem representar melhorias e funcionalidades, além de erros."
   },
   {
     id: "go-pergunta", chapter: "Uma decisão em código",
-    title: "Por que copiar este valor?", terms: ["Ponteiro","Referência","Cópia","Encapsulamento"],
+    title: "Por que copiar este valor?", terms: ["Struct","Ponteiro","Referência","Cópia"],
     html: `<h2>Por que <span class="keyword">copiar</span> este valor?</h2><div class="split exercise"><div><pre class="code"><code><span class="kw">type</span> CNPJ <span class="kw">struct</span> {
     Valor <span class="kw">string</span>
 }
@@ -197,7 +213,7 @@ Registre as decisões tomadas.</code></pre></div></div>`,
   },
   {
     id: "skill-investigacao", chapter: "",
-    title: "Perguntas melhores antes do código", terms: ["Caso de borda","Levantamento de requisitos","Grilling"],
+    title: "Perguntas melhores antes do código", terms: ["Matt Pocock","grill-me","grill-with-docs","grilling","Modo plan","Caso de borda"],
     html: `<h2>Perguntas melhores<br>antes do código.</h2><div class="split"><div><p class="lead">“E se a demanda chegar ao setor errado?”</p><p class="lead reveal" style="margin-top:28px">“Quem pode ver o histórico depois de um encaminhamento?”</p></div><div><div class="code-title">mattpocock/skills</div><ul class="list skill-list"><li><code>grill-me</code><span>Questiona um plano até cada decisão ter resposta.</span></li><li><code>grill-with-docs</code><span>Faz o mesmo com a documentação do projeto e registra as decisões.</span></li><li><code>grilling</code><span>A entrevista por trás das duas, usada pelo próprio agente.</span></li></ul></div></div><p class="caption">Cada pergunta nasce da resposta anterior.</p>`,
     notes: "Voltando: eu uso as skills do Matt Pocock, do repositório mattpocock/skills, que tem várias skills e também um plugin. Destaco três. A grill-me te entrevista sobre um plano até cada decisão ter resposta. A grill-with-docs faz o mesmo usando a documentação do projeto e registra as decisões e o vocabulário. E a grilling é a entrevista por trás delas, que o próprio agente usa. No dia a dia, a grill-with-docs é a que mais uso. É diferente do modo plan do Codex ou do Claude: as perguntas miram casos excepcionais, e cada pergunta nasce da resposta anterior. [Revele.] Foi assim que surgiram perguntas como estas, sobre o nosso projeto.",
     check: "Apresente suas skills de investigação inspiradas em Matt Pocock: grill-me, grilling e a versão com documentos que você usa. Os nomes e a disponibilidade dependem do pacote e de adaptações locais; não apresente todos como nomes atuais garantidos de um mesmo repositório. Mostre a instalação real durante a oficina se fizer sentido. O nome correto é grill-with-docs, não grill-me-with-docs (conferido no repositório em 15/11/2026). Instalação no Claude Code: claude plugin install mattpocock-skills@claude-plugins-official, ou npx skills@latest add mattpocock/skills (escolha um dos dois). Se puder, mostre uma pergunta real da sua preparação que mudou uma decisão."
@@ -212,7 +228,7 @@ Registre as decisões tomadas.</code></pre></div></div>`,
   },
   {
     id: "escolher-skills", chapter: "",
-    title: "Escolha pela tarefa", terms: ["Skill","Code review","UI","UX"],
+    title: "Escolha pela tarefa", terms: ["Contexto","Alucinação","UI","UX"],
     html: `<h2>Escolha pela <span class="keyword">tarefa.</span></h2><dl class="rows"><div class="row"><dt>Entender</dt><dd>Investigação e levantamento de requisitos.</dd></div><div class="row"><dt>Desenhar</dt><dd>Fluxos, interface e experiência de uso.</dd></div><div class="row"><dt>Conferir</dt><dd>Revisão de código e verificação do comportamento.</dd></div></dl><p class="caption">Escolha instruções relevantes e verifique a qualidade do resultado.</p>`,
     notes: "Ter uma infinidade de skills não garante um bom resultado. Mais contexto não significa melhor contexto: informação irrelevante, contraditória ou desatualizada atrapalha. Escolha a skill pela tarefa: para a documentação, skills que investigam o produto e te questionam sobre decisões; para o frontend, skills de gosto de interface e refinamento de telas; para conferir, skills de revisão. Se não souber qual usar, peça ao agente para pesquisar a skill certa, ou monte a sua.",
     check: "Ter uma biblioteca extensa não substitui escolher os procedimentos adequados. Contexto irrelevante ou contraditório pode atrapalhar; evite a regra absoluta de que mais contexto sempre gera mais alucinação. Skills também precisam ser lidas e avaliadas."
@@ -240,14 +256,14 @@ Registre as decisões tomadas.</code></pre></div></div>`,
   },
   {
     id: "painel-atual", chapter: "Nosso problema real",
-    title: "O que o painel já faz", terms: ["Autorização","Setor","Dashboard"],
+    title: "O que o painel já faz", terms: ["Autorização","Dashboard","Setor"],
     html: `<h2>O que o painel já faz</h2><div class="split"><div><p class="lead">Cada usuário atua<br>no escopo do seu setor.</p><p class="caption">Ter acesso ao sistema não significa ter acesso a todas as demandas.</p></div><div><ul class="list"><li>Consultar registros e histórico.</li><li>Comentar o atendimento.</li><li>Encaminhar ou encerrar.</li><li>Visualizar indicadores por setor.</li></ul></div></div>`,
     notes: "O painel tem usuários cadastrados pelo administrador. Cada usuário tem um escopo, o setor, e só interage com as demandas daquele setor: quem é do pedagógico vê os envios do pedagógico. No painel dá para listar o histórico, ler um envio, comentar o atendimento, encaminhar para outro setor ou encerrar a demanda, e ver gráficos comparando os tipos de solicitação por setor.",
     check: "Explique autenticação (quem é você) versus autorização (o que pode fazer). Os perfis e a visibilidade descritos vêm do roteiro. Uma nova solução precisa preservar os controles necessários e esclarecer as regras antes de implementar novas telas."
   },
   {
     id: "melhorias", chapter: "Nosso problema real",
-    title: "Onde queremos melhorar", terms: ["Rastreabilidade","Caso de borda","Manutenção"],
+    title: "Onde queremos melhorar", terms: ["Rastreabilidade","Caso de borda","Manutenção","Repositório Git"],
     html: `<h2>Onde queremos melhorar</h2><dl class="rows"><div class="row"><dt>Acompanhamento</dt><dd>O solicitante precisa saber o que aconteceu.</dd></div><div class="row"><dt>Rastreabilidade</dt><dd>O próximo setor precisa entender o caminho percorrido.</dd></div><div class="row"><dt>Exceções</dt><dd>Destino errado ou setor não listado.</dd></div><div class="row"><dt>Manutenção</dt><dd>Facilitar a colaboração e a evolução do produto.</dd></div></dl>`,
     notes: "O sistema funciona, mas pode melhorar. Levantamos quatro pontos. Acompanhamento: quem envia só recebe e-mails, não acompanha o tratamento em tempo real. Rastreabilidade: se a demanda passa por três setores, o terceiro não vê facilmente quem já contribuiu. Exceções: e se enviarem para o setor errado, ou para um setor que não está na lista? E manutenção: por ser uma ferramenta Google, novas funcionalidades dependem do acesso à conta dona do código, e o processo atual não usa um repositório Git.",
     check: "Apresente como pontos levantados no relato, sem afirmar que o sistema não tem falhas ou que houve auditoria estrutural. Apps Script permite fluxo local com Git por meio do clasp; a limitação descrita é do processo atual, não uma impossibilidade técnica da plataforma.",
@@ -262,7 +278,7 @@ Registre as decisões tomadas.</code></pre></div></div>`,
   },
   {
     id: "tecnologias", chapter: "Do problema à solução",
-    title: "As ferramentas da oficina", terms: ["Backend","Frontend","Banco relacional","Docker","Git","GitHub Issues","GitHub Projects"],
+    title: "As ferramentas da oficina", terms: ["Java","Spring Boot","Flutter","PostgreSQL","Banco de dados relacional","Docker","Git","GitHub Issues e Projects","Diagrama de classes","Diagrama de casos de uso"],
     html: `<h2>As ferramentas da oficina</h2><div class="stack"><div><span class="small">Documentação</span><h3>Skills +<br>diagramas</h3><p>Requisitos, classes e casos de uso.</p></div><div><span class="small">Regras e processamento</span><h3>Java +<br>Spring Boot</h3><p>Backend da aplicação.</p></div><div><span class="small">Interface</span><h3>Flutter</h3><p>Interação com o usuário.</p></div><div><span class="small">Persistência</span><h3>PostgreSQL</h3><p>Banco de dados relacional.</p></div></div><p class="caption">Docker para o ambiente. Git para o histórico.<br>GitHub Issues e Projects para organizar o trabalho.</p>`,
     notes: "Pensando nisso, estas são as ferramentas. Para a documentação, as skills grill-me e grill-with-docs, para investigação e levantamento de requisitos, e diagramas de classe e de casos de uso. Para o código: Java com Spring Boot no backend, Flutter no frontend e PostgreSQL como banco relacional. Docker para a infraestrutura, Git para o versionamento e GitHub Issues e Projects para acompanhar as tarefas.",
     check: "Essa é a stack do produto a desenvolver na oficina, conforme o roteiro. A apresentação em si usa HTML, CSS e JavaScript. Relacione cada ferramenta à sua função antes de entrar em siglas e detalhes de implementação."
@@ -276,7 +292,7 @@ Registre as decisões tomadas.</code></pre></div></div>`,
   },
   {
     id: "decisoes-publico", chapter: "Mãos à obra",
-    title: "O que vamos decidir juntos?", terms: ["Regra de negócio","Permissão","Diagrama","Escopo"],
+    title: "O que vamos decidir juntos?", terms: ["Regra de negócio","Permissão","Escopo"],
     html: `<h2>O que vamos<br><span class="keyword">decidir</span> juntos?</h2><div class="decision-prompts"><p>Quem acompanha?<small>Solicitante, setores e permissões.</small></p><p>O que fica no histórico?<small>Encaminhamentos e informações visíveis.</small></p><p>Como corrigir um destino?<small>Exceções e responsabilidade pelo caso.</small></p><p>O que entra na primeira versão?<small>Prioridade e limites da entrega.</small></p></div>`,
     notes: "Algumas decisões ficaram em aberto de propósito, para tomarmos juntos. [Leia cada pergunta e peça opiniões.] Para cada escolha, quero ouvir a justificativa. O que vocês decidirem vai para a documentação e para os diagramas.",
     check: "Questões sugeridas para a discussão; valide com o cliente e com os requisitos existentes. Convide o público a escolher e justificar. Leve as respostas para a documentação e para os diagramas de classe e de casos de uso. Nenhuma dessas opções é decidida automaticamente pela apresentação."
@@ -290,7 +306,7 @@ Registre as decisões tomadas.</code></pre></div></div>`,
   },
   {
     id: "encerramento", chapter: "Para levar da oficina", className: "statement",
-    title: "A decisão continua sendo sua.", terms: ["Decisão técnica","Validação"],
+    title: "A decisão continua sendo sua.", terms: ["Decisão técnica","Engenharia de software","Validação"],
     html: `<h2>A decisão<br>continua<br>sendo sua.</h2><p class="lead">Entenda o problema.<br>Saiba explicar o que você entrega.</p><p class="caption">Perguntas?</p>`,
     notes: "Lembram que eu disse no começo que tinha ganhado alguns funcionários? Eles escreveram boa parte do código que vocês viram hoje. Mas não foram eles que decidiram o que o campus precisava, quais regras o sistema deveria respeitar ou o que seria aceitável entregar. É aí que entra a engenharia de software. O objetivo não é saber pedir código para uma IA; é saber construir software e usar a IA para ampliar o que conseguimos fazer. A decisão continua sendo sua. [Abra para perguntas e convide a comunidade a continuar o projeto.]",
     check: "Retorne a este slide depois da parte prática. Peça que o público cite uma decisão que mudou o produto. Convide a comunidade a continuar o projeto e encerre com perguntas."

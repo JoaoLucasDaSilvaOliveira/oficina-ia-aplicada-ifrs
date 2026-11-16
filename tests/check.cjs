@@ -68,7 +68,17 @@ const context = vm.createContext({document, window, location, history,
 });
 vm.runInContext(fs.readFileSync(path.join(root, "slides.js"), "utf8"), context);
 const slides = vm.runInContext("SLIDES", context);
-assert.equal(slides.length, 35);
+assert.equal(slides.length, 36);
+// Dicionário do público: todo termo de slide tem definição, e os termos marcados no roteiro estão presentes.
+vm.runInContext(fs.readFileSync(path.join(root, "glossario.js"), "utf8") + ";this.G = GLOSSARY;", context);
+const glossary = context.G;
+slides.forEach(slide => slide.terms.forEach(term => assert.ok(glossary[term], `${slide.id}: termo sem definição: ${term}`)));
+for (const term of ["Desenvolvimento backend", "Ferramentas agênticas", "Atrofia cognitiva", "Vibe coding", "IA generativa", "Linguagem natural", "Bare metal", "Andrej Karpathy", "OpenAI", "Lovable", "Low-code e no-code", "Product Owner", "Product Manager", "Tech Lead", "Desenvolvedor sênior", "Desenvolvedor júnior", "Spec-Driven Development", "AGENTS.md", "Requisito funcional", "Requisito não funcional", "Diagrama de classes", "Diagrama de casos de uso", "História de usuário", "CRUD", "Trade-off", "Skill", "Matt Pocock", "grill-me", "grilling", "grill-with-docs", "Anthropic", "Contexto", "Google Apps Script", "Caso de borda", "Spring Boot", "Flutter", "Docker", "Git", "GitHub Issues e Projects"]) {
+  assert.ok(glossary[term], `termo do roteiro sem definição: ${term}`);
+  assert.ok(slides.some(slide => slide.terms.includes(term)), `termo do roteiro fora dos slides: ${term}`);
+}
+const links = vm.runInContext("WORKSHOP_LINKS", context);
+for (const key of ["dicionario", "github", "linkedin"]) assert.match(links[key], /^https:\/\//);
 assert.equal(new Set(slides.map(slide => slide.id)).size, slides.length);
 slides.forEach(slide => {
   assert.match(slide.id, /^[a-z0-9-]+$/);
@@ -143,7 +153,7 @@ assert.equal(document.body.dataset.tone, "white");
 for (let step = 0; step < 60; step++) forward();
 assert.equal(main.dataset.slideId, "encerramento");
 assert.equal(getElement("#next").disabled, true);
-assert.equal(getElement(".progress").getAttribute("aria-valuenow"), "35");
+assert.equal(getElement(".progress").getAttribute("aria-valuenow"), "36");
 assert.equal(emitted.at(-1).detail.id, "encerramento");
 assert.ok(emitted.at(-1).detail.terms.length);
 navigate("skills"); assert.equal(getElement("#chapter").textContent, "");
@@ -179,10 +189,10 @@ const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 assert.doesNotMatch(html, /id="(?:help|notes|step-hint|dialog)"/);
 assert.match(html, /name="color-scheme" content="only light"/);
 assert.ok(!slides.some(slide => slide.chapter === "Instruções reutilizáveis"));
-for (const asset of ["styles.css", "slides.js", "app.js", "assets/open-sans-regular.ttf", "assets/open-sans-bold.ttf", "assets/OFL.txt"]) {
+for (const asset of ["styles.css", "slides.js", "app.js", "glossario.js", "assets/qrcode.js", "assets/joao-lucas.jpg", "dicionario/index.html", "dicionario/dicionario.js", "dicionario/dicionario.css", "assets/open-sans-regular.ttf", "assets/open-sans-bold.ttf", "assets/OFL.txt"]) {
   assert.ok(fs.existsSync(path.join(root, asset)), asset);
 }
 assert.ok(animations.length > motionCount);
 assert.ok(animations.slice(motionCount).every(animation => animation.frames.every(frame => !("translate" in frame))),
   "movimento reduzido mantém só opacidade");
-console.log("OK: 35 slides; apresentador; navegação; revelações; timers de 3s; pausa; visibilidade; limpeza; geometria simulada; tema claro; eventos e assets.");
+console.log("OK: 36 slides; dicionário; apresentador; navegação; revelações; timers de 3s; pausa; visibilidade; limpeza; geometria simulada; tema claro; eventos e assets.");

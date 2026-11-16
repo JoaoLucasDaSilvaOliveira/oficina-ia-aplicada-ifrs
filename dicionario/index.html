@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2f9e41">
+  <meta name="color-scheme" content="only light">
+  <meta name="description" content="Dicionário da oficina Além do Vibecoding: os termos de cada slide, explicados. IFRS Campus Osório.">
+  <title>Dicionário · Além do Vibecoding</title>
+  <link rel="stylesheet" href="dicionario.css">
+  <script src="../slides.js" defer></script>
+  <script src="../glossario.js" defer></script>
+  <script src="dicionario.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir para os termos</a>
+  <header class="d-head">
+    <p class="d-kicker">IFRS Campus Osório · Além do Vibecoding</p>
+    <h1>Dicionário da oficina</h1>
+    <label class="d-search">
+      <span class="sr-only">Buscar um termo</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <input id="search" type="search" placeholder="Buscar um termo" autocomplete="off" enterkeyhint="search">
+    </label>
+    <nav class="d-tabs" aria-label="Modo de consulta">
+      <a id="tab-slide" href="#abertura">Por slide</a>
+      <a id="tab-all" href="#termos">Todos de A a Z</a>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section id="view-slide" aria-labelledby="slide-heading">
+      <div class="d-slidebar">
+        <button id="prev" type="button" aria-label="Slide anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>
+        <label class="d-select">
+          <span class="sr-only">Escolher o slide</span>
+          <select id="slide-select"></select>
+        </label>
+        <button id="next" type="button" aria-label="Próximo slide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
+      </div>
+      <h2 id="slide-heading" class="d-slide-title"></h2>
+      <ol id="slide-terms" class="d-terms"></ol>
+    </section>
+
+    <section id="view-all" aria-labelledby="all-heading" hidden>
+      <h2 id="all-heading" class="d-slide-title">Todos os termos</h2>
+      <ol id="all-terms" class="d-terms"></ol>
+    </section>
+
+    <section id="view-search" aria-labelledby="search-heading" hidden>
+      <h2 id="search-heading" class="d-slide-title" aria-live="polite"></h2>
+      <ol id="search-terms" class="d-terms"></ol>
+    </section>
+  </main>
+
+  <footer class="d-foot">
+    <p>Definições curtas, para acompanhar a oficina. Na dúvida, pergunte: ninguém nasce sabendo o que é um <em>trade-off</em>.</p>
+  </footer>
+  <noscript>Ative o JavaScript para consultar o dicionário.</noscript>
+</body>
+</html>

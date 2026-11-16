@@ -14,8 +14,10 @@ for name in ("open-sans-regular.ttf", "open-sans-bold.ttf"):
 
 html = (root / "index.html").read_text()
 html = html.replace('<link rel="stylesheet" href="styles.css">', f"<style>\n{css}\n</style>")
-for name in ("slides.js", "app.js"):
+avatar = base64.b64encode((root / "assets/joao-lucas.jpg").read_bytes()).decode()
+for name in ("assets/qrcode.js", "slides.js", "app.js"):
     code = (root / name).read_text()
+    code = code.replace('src="assets/joao-lucas.jpg"', f'src="data:image/jpeg;base64,{avatar}"')
     if "</script" in code.lower():
         raise ValueError(f"Fechamento de script precisa ser escapado em {name}")
     # defer não adia scripts inline: o código deve ficar depois do corpo.
@@ -26,8 +28,8 @@ license_text = (root / "assets/OFL.txt").read_text()
 html = html.replace("</head>", f"<!-- Open Sans license\n{license_text}\n-->\n</head>")
 (output / "apresentacao.html").write_text(html)
 
-paths = [root / name for name in ("index.html", "styles.css", "slides.js", "app.js", "README.md")]
-for folder in ("assets", "docs", "tests", "scripts"):
+paths = [root / name for name in ("index.html", "styles.css", "slides.js", "app.js", "glossario.js", "README.md")]
+for folder in ("assets", "docs", "tests", "scripts", "dicionario"):
     paths.extend(path for path in (root / folder).rglob("*") if path.is_file() and "__pycache__" not in path.parts)
 with zipfile.ZipFile(output / "oficina-ia-slides.zip", "w", zipfile.ZIP_DEFLATED) as archive:
     for path in paths:
