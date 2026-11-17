@@ -118,6 +118,11 @@ do ajuste em duas dimensões. Não substitui revisão visual em navegador.
 Para gerar novamente o HTML independente e o ZIP, execute
 `python3 scripts/package.py`. A saída vai para `entrega/`.
 
+Antes de publicar no GitHub Pages, execute `python3 scripts/versionar.py`. Ele
+coloca `?v=<hash>` no endereço de cada CSS e JS das páginas, para o navegador
+não misturar arquivos novos com antigos guardados em cache (o Pages manda
+guardar por 10 minutos). O teste falha se alguma versão estiver desatualizada.
+
 ## Identidade visual
 
 Cores hexadecimais do Manual de Aplicação da Marca IF, edição 2015, página 14:

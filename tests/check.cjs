@@ -244,4 +244,14 @@ for (const asset of ["styles.css", "slides.js", "app.js", "glossario.js", "asset
 assert.ok(animations.length > motionCount);
 assert.ok(animations.slice(motionCount).every(animation => animation.frames.every(frame => !("translate" in frame))),
   "movimento reduzido mantém só opacidade");
+// As páginas carregam CSS e JS com ?v=<hash> atual (rode scripts/versionar.py antes de publicar).
+const crypto = require("node:crypto");
+for (const page of ["index.html", "dicionario/index.html"]) {
+  const text = fs.readFileSync(path.join(root, page), "utf8");
+  for (const [, ref, stamp] of text.matchAll(/(?:src|href)="([^"?#:]+\.(?:css|js))(?:\?v=([0-9a-f]+))?"/g)) {
+    const file = path.join(root, path.dirname(page), ref);
+    const expected = crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex").slice(0, 10);
+    assert.equal(stamp, expected, `${page}: ${ref} com versão desatualizada; rode python3 scripts/versionar.py`);
+  }
+}
 console.log("OK: 36 slides; dicionário; ao vivo; perguntas; apresentador; navegação; revelações; timers de 3s; pausa; visibilidade; limpeza; geometria simulada; tema claro; eventos e assets.");

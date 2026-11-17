@@ -13,7 +13,8 @@ for name in ("open-sans-regular.ttf", "open-sans-bold.ttf"):
     css = css.replace(f'url("assets/{name}")', f'url("data:font/ttf;base64,{encoded}")')
 
 html = (root / "index.html").read_text()
-html = html.replace('<link rel="stylesheet" href="styles.css">', f"<style>\n{css}\n</style>")
+import re
+html = re.sub(r'<link rel="stylesheet" href="styles\.css(?:\?v=[0-9a-f]+)?">', lambda _: f"<style>\n{css}\n</style>", html)
 avatar = base64.b64encode((root / "assets/joao-lucas.jpg").read_bytes()).decode()
 for name in ("assets/qrcode.js", "slides.js", "app.js"):
     code = (root / name).read_text()
@@ -21,7 +22,7 @@ for name in ("assets/qrcode.js", "slides.js", "app.js"):
     if "</script" in code.lower():
         raise ValueError(f"Fechamento de script precisa ser escapado em {name}")
     # defer não adia scripts inline: o código deve ficar depois do corpo.
-    html = html.replace(f'  <script src="{name}" defer></script>\n', "")
+    html = re.sub(rf'  <script src="{re.escape(name)}(?:\?v=[0-9a-f]+)?" defer></script>\n', "", html)
     html = html.replace("</body>", f"<script>\n{code}\n</script>\n</body>")
 
 license_text = (root / "assets/OFL.txt").read_text()
