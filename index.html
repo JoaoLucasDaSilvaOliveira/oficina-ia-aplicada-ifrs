@@ -16,7 +16,10 @@
   <a class="skip-link" href="#slide">Ir para o slide</a>
   <header class="masthead">
     <span>IFRS <span class="campus">Campus Osório</span></span>
-    <span id="chapter">Oficina de IA aplicada</span>
+    <button id="questions" class="questions-button" type="button" aria-haspopup="dialog" aria-label="Perguntas" title="Perguntas (Q)">
+      <span aria-hidden="true">?</span>
+      <span id="questions-badge" class="questions-badge" hidden>0</span>
+    </button>
   </header>
   <main id="slide" class="slide" tabindex="-1" aria-label="Apresentação"></main>
   <footer class="controls">
@@ -37,6 +40,20 @@
   </footer>
   <div class="progress" role="progressbar" aria-label="Progresso da apresentação" aria-valuemin="1"><span></span></div>
   <p id="announcement" class="sr-only" role="status" aria-live="polite"></p>
+  <dialog id="questions-dialog" class="q-dialog" aria-labelledby="questions-title">
+    <div class="q-head">
+      <h2 id="questions-title">Perguntas</h2>
+      <form method="dialog"><button class="q-close">Fechar</button></form>
+    </div>
+    <ol id="questions-list" class="q-list"></ol>
+  </dialog>
+  <dialog id="question-detail" class="q-dialog q-detail" aria-labelledby="question-detail-name">
+    <p id="question-detail-name" class="q-detail-name"></p>
+    <p id="question-detail-term" class="q-term"></p>
+    <p id="question-detail-text" class="q-detail-text"></p>
+    <form method="dialog"><button class="q-close">Fechar</button></form>
+  </dialog>
+  <div id="question-toast" class="q-toast-box" aria-live="polite"></div>
   <noscript>Ative o JavaScript para navegar na apresentação.</noscript>
 </body>
 </html>

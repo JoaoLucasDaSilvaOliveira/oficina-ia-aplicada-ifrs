@@ -17,6 +17,7 @@ A versão `apresentacao.html`, quando empacotada, reúne tudo em um único arqui
 | Tela cheia | F |
 | Pausar / retomar a demonstração automática | P |
 | Abrir a janela do apresentador | N |
+| Abrir as perguntas | Q |
 
 Os controles visíveis também funcionam por toque. O rodapé mostra a navegação,
 a tela cheia e, nos dois exemplos automáticos, um botão de pausa opcional.
@@ -81,6 +82,32 @@ do dicionário assume a publicação em
 Se o repositório tiver outro nome, troque ali e os QR codes se ajustam sozinhos.
 Para incluir um termo, adicione-o a `terms` no slide e a definição em
 `glossario.js`; o teste falha se faltar uma definição ou se sobrar uma sem slide.
+
+## Modo ao vivo e perguntas
+
+A apresentação e o dicionário conversam por um Firebase Realtime Database
+(endereço em `WORKSHOP_LINKS.firebase`, no `slides.js`), direto por HTTP, sem
+biblioteca e sem login. As regras do banco estão em `docs/firebase-regras.json`:
+só o slide atual (`ao-vivo`) e as perguntas (`perguntas`) ficam abertos, e no
+formato certo. Sem login, quem tiver o link pode ler as perguntas ou mudar o
+slide atual; esse risco foi aceito para a oficina.
+
+- **Modo ao vivo:** a cada troca de slide, a apresentação grava o slide atual.
+  O dicionário consulta a cada 2 segundos e segue a apresentação. Navegar,
+  buscar ou trocar de aba desliga o modo; o botão "Ao vivo" religa e volta ao
+  slide atual.
+- **Perguntas:** na primeira visita, o dicionário pede o nome do participante
+  (fica no navegador). Tocar num termo abre a pergunta sobre ele; "Fazer uma
+  pergunta", no topo, abre a pergunta livre. Depois do envio, aparece só
+  "Pergunta enviada".
+- **No projetor:** o botão "?" no canto superior direito mostra, em vermelho,
+  quantas perguntas não foram lidas. Cada pergunta nova aparece num card no
+  centro inferior, que sobe e some em 5 segundos (em fila, se chegarem várias).
+  O "?" ou a tecla Q abre a lista, em ordem de chegada, com as não lidas em
+  destaque. Clicar numa pergunta abre o texto inteiro e a marca como lida.
+
+Sem internet, a apresentação funciona normalmente, só sem o modo ao vivo e as
+perguntas. Os termos usados aqui estão em `CONTEXT.md`.
 
 ## Verificação
 

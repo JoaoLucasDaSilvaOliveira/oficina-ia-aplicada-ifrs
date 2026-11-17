@@ -88,3 +88,13 @@ rodapé, à esquerda, abre os termos daquele slide; ele usa correção de erro L
 para ficar menos denso e foi conferido com leitor de QR. O dicionário segue a
 mesma identidade (Open Sans, verde e vermelho do IF), em uma coluna para
 celular, com a barra de troca de slide fixa no topo durante a rolagem.
+
+## Perguntas
+
+O cabeçalho deixou de mostrar o capítulo: no canto direito fica o botão "?",
+com um contador vermelho de perguntas não lidas que pulsa ao subir. Pergunta
+nova surge num card no centro inferior, com 75% de opacidade, subindo 24px e
+sumindo em 5s; com movimento reduzido, só some. A lista e a pergunta aberta são
+dialogs modais, legíveis no projetor; as não lidas têm fundo rosado, faixa e
+selo "nova" em vermelho. No dicionário, uma barra fixa no topo traz o modo ao
+vivo e "Fazer uma pergunta"; cada termo tem a etiqueta "Perguntar".

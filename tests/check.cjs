@@ -60,7 +60,16 @@ const choices = ["tracking", "history", "routing"].map(mode => {
 const demoButtons = ["reference", "copy"].map(mode => {
   const button = new Element(); button.dataset.demo = mode; return button;
 });
-const context = vm.createContext({document, window, location, history,
+// Firebase simulado: registra as gravações (fetch) e permite emitir eventos do streaming.
+const requests = [];
+const streams = [];
+class FakeEventSource {
+  constructor(url) { this.url = url; this.listeners = {}; streams.push(this); }
+  addEventListener(name, handler) { this.listeners[name] = handler; }
+  emit(name, payload) { this.listeners[name]({data: JSON.stringify(payload)}); }
+}
+const context = vm.createContext({document, window, location, history, EventSource: FakeEventSource,
+  fetch(url, options = {}) { requests.push({url, method: options.method || "GET", body: options.body && JSON.parse(options.body)}); return Promise.resolve({ok: true, json: () => Promise.resolve(null)}); },
   setInterval(callback, delay) { assert.equal(delay, 3000); timers.set(++timerId, callback); return timerId; },
   clearInterval(id) { timers.delete(id); },
   getComputedStyle() { return {paddingLeft: "24", paddingRight: "24", paddingTop: "24", paddingBottom: "24"}; },
@@ -158,7 +167,45 @@ assert.equal(getElement("#next").disabled, true);
 assert.equal(getElement(".progress").getAttribute("aria-valuenow"), "36");
 assert.equal(emitted.at(-1).detail.id, "encerramento");
 assert.ok(Array.isArray(emitted.at(-1).detail.terms));
-navigate("skills"); assert.equal(getElement("#chapter").textContent, "");
+
+// Modo ao vivo: cada troca de slide grava o slide atual no banco, em ordem.
+navigate("skills");
+setImmediate(() => {
+  const live = requests.filter(request => request.url.endsWith("/ao-vivo.json"));
+  assert.ok(live.length > 10, "a apresentação publica o slide atual");
+  // A última gravação corresponde ao slide que ficou na tela no fim do teste.
+  const id = main.dataset.slideId;
+  assert.deepEqual(live.at(-1), {url: "https://oficina-ia-aplicada-default-rtdb.firebaseio.com/ao-vivo.json", method: "PUT", body: {slide: id, indice: slides.findIndex(slide => slide.id === id)}});
+  console.log("OK: ao vivo publica o slide atual em ordem.");
+});
+
+// Perguntas: o streaming carrega as existentes sem card, e o contador mostra as não lidas.
+assert.equal(streams.length, 1);
+assert.match(streams[0].url, /\/perguntas\.json$/);
+const badge = getElement("#questions-badge");
+streams[0].emit("put", {path: "/", data: {
+  a1: {nome: "Ana", texto: "O que é SDD?", termo: "Spec-Driven Development", criadaEm: 1, lida: true},
+  b2: {nome: "Bruno", texto: "<img src=x onerror=alert(1)>", criadaEm: 2, lida: false}
+}});
+assert.equal(badge.textContent, "1"); assert.equal(badge.hidden, false);
+streams[0].emit("put", {path: "/c3", data: {nome: "Caio", texto: "E o Docker?", criadaEm: 3, lida: false}});
+assert.equal(badge.textContent, "2");
+streams[0].emit("patch", {path: "/b2", data: {lida: true}});
+assert.equal(badge.textContent, "1");
+streams[0].emit("put", {path: "/c3/lida", data: true});
+assert.equal(badge.textContent, "0"); assert.equal(badge.hidden, true);
+// A lista sai em ordem de chegada e com o texto do público escapado.
+getElement("#questions").listeners.click();
+const listHtml = getElement("#questions-list").innerHTML;
+assert.ok(listHtml.indexOf("Ana") < listHtml.indexOf("Bruno") && listHtml.indexOf("Bruno") < listHtml.indexOf("Caio"));
+assert.ok(!listHtml.includes("<img"), "texto do público é escapado");
+// Abrir uma pergunta não lida a marca como lida no banco.
+streams[0].emit("put", {path: "/d4", data: {nome: "Dani", texto: "Pergunta nova", criadaEm: 4, lida: false}});
+assert.equal(badge.textContent, "1");
+getElement("#questions-list").listeners.click({target: {closest: () => ({dataset: {question: "d4"}})}});
+assert.equal(badge.textContent, "0");
+assert.deepEqual(requests.at(-1), {url: "https://oficina-ia-aplicada-default-rtdb.firebaseio.com/perguntas/d4.json", method: "PATCH", body: {lida: true}});
+streams[0].emit("put", {path: "/d4", data: null});
 
 // Janela do apresentador: pede o estado, navega e recebe o estado de volta.
 const posted = [];
@@ -197,4 +244,4 @@ for (const asset of ["styles.css", "slides.js", "app.js", "glossario.js", "asset
 assert.ok(animations.length > motionCount);
 assert.ok(animations.slice(motionCount).every(animation => animation.frames.every(frame => !("translate" in frame))),
   "movimento reduzido mantém só opacidade");
-console.log("OK: 36 slides; dicionário; apresentador; navegação; revelações; timers de 3s; pausa; visibilidade; limpeza; geometria simulada; tema claro; eventos e assets.");
+console.log("OK: 36 slides; dicionário; ao vivo; perguntas; apresentador; navegação; revelações; timers de 3s; pausa; visibilidade; limpeza; geometria simulada; tema claro; eventos e assets.");

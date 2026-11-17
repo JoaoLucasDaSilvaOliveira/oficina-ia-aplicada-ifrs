@@ -14,6 +14,14 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Ir para os termos</a>
+  <div class="d-bar">
+    <button id="live" class="d-live" type="button" aria-pressed="true">
+      <span class="d-live-dot" aria-hidden="true"></span>
+      <span id="live-label">Ao vivo</span>
+    </button>
+    <button id="ask" class="d-ask" type="button" aria-haspopup="dialog">Fazer uma pergunta</button>
+  </div>
+
   <header class="d-head">
     <p class="d-kicker">IFRS Campus Osório · Além do Vibecoding</p>
     <h1>Dicionário da oficina</h1>
@@ -39,6 +47,7 @@
         <button id="next" type="button" aria-label="Próximo slide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
       </div>
       <h2 id="slide-heading" class="d-slide-title"></h2>
+      <p class="d-hint">Toque num termo para perguntar sobre ele.</p>
       <ol id="slide-terms" class="d-terms"></ol>
     </section>
 
@@ -56,6 +65,40 @@
   <footer class="d-foot">
     <p>Definições curtas, para acompanhar a oficina. Na dúvida, pergunte: ninguém nasce sabendo o que é um <em>trade-off</em>.</p>
   </footer>
+
+  <dialog id="name-dialog" class="d-dialog" aria-labelledby="name-title">
+    <form id="name-form" novalidate>
+      <h2 id="name-title">Como você se chama?</h2>
+      <p class="d-dialog-text">Seu nome vai junto das perguntas que você fizer durante a oficina.</p>
+      <label class="d-field">
+        <span>Nome</span>
+        <input id="name-input" name="nome" type="text" autocomplete="name" maxlength="60" required>
+      </label>
+      <p id="name-error" class="d-error" role="alert"></p>
+      <div class="d-actions"><button class="d-primary" type="submit">Continuar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="ask-dialog" class="d-dialog" aria-labelledby="ask-title">
+    <form id="ask-form" novalidate>
+      <h2 id="ask-title">Fazer uma pergunta</h2>
+      <p id="ask-as" class="d-dialog-text"></p>
+      <label class="d-field">
+        <span>Sua pergunta</span>
+        <textarea id="ask-text" name="texto" rows="4" required></textarea>
+      </label>
+      <p id="ask-error" class="d-error" role="alert"></p>
+      <div class="d-actions">
+        <button id="ask-cancel" class="d-secondary" type="button">Cancelar</button>
+        <button id="ask-send" class="d-primary" type="submit">Enviar</button>
+      </div>
+    </form>
+    <div id="ask-done" class="d-done" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m7 12.5 3.2 3.2L17 9"/></svg>
+      <h2>Pergunta enviada</h2>
+      <div class="d-actions"><button id="ask-close" class="d-primary" type="button">Fechar</button></div>
+    </div>
+  </dialog>
   <noscript>Ative o JavaScript para consultar o dicionário.</noscript>
 </body>
 </html>

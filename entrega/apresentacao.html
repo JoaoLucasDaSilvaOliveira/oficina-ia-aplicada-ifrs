@@ -358,6 +358,47 @@ body[data-tone="green"] .slide-qr .qr{border-color:transparent}
 .profile-text span{font-size:clamp(14px,1.25vw,19px);color:var(--muted);overflow-wrap:anywhere}
 @media(max-width:650px){.slide-qr-label{display:none}.profile{gap:16px;padding:12px}.profile .qr{width:96px}}
 
+/* Perguntas no projetor: botão "?" com contador, lista, pergunta aberta e card de chegada */
+.questions-button{position:relative;display:grid;place-items:center;width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:50%;background:transparent;font-size:20px;font-weight:700;color:var(--green-ink);transition:background-color var(--feedback-duration) ease,border-color var(--feedback-duration) ease,transform 140ms var(--ease-out)}
+.questions-button:active{transform:scale(.94)}
+@media(hover:hover) and (pointer:fine){.questions-button:hover{background:var(--wash)}}
+body[data-tone="green"] .questions-button{color:var(--paper);border-color:rgb(255 255 255 / .55)}
+@media(hover:hover) and (pointer:fine){body[data-tone="green"] .questions-button:hover{background:rgb(255 255 255 / .12)}}
+.questions-badge{position:absolute;top:-6px;right:-8px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--if-red);color:var(--paper);font-size:13px;font-weight:700;line-height:22px;text-align:center;font-variant-numeric:tabular-nums;box-shadow:0 0 0 2px var(--paper)}
+body[data-tone="green"] .questions-badge{box-shadow:0 0 0 2px var(--green-stage)}
+
+.q-dialog{width:min(920px,calc(100vw - 48px));max-height:calc(100dvh - 64px);padding:32px 36px;border:0;border-radius:12px;background:var(--paper);color:var(--ink);overflow:auto}
+.q-dialog::backdrop{background:rgb(21 25 21 / .5)}
+.q-dialog[open]{animation:q-in 220ms var(--ease-out)}
+@keyframes q-in{from{opacity:0;translate:0 12px}}
+.q-head{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:16px}
+.q-head h2{margin:0;font-size:clamp(30px,3vw,44px);color:var(--if-green)}
+.q-close{min-height:48px;padding:0 20px;border:1px solid var(--line);border-radius:4px;background:var(--wash);font-size:17px;font-weight:700}
+.q-list{list-style:none;margin:0;padding:0}
+.q-list li+li{margin-top:10px}
+.q-item{display:flex;flex-direction:column;align-items:flex-start;gap:6px;width:100%;padding:16px 20px;border:1px solid var(--line);border-left:4px solid var(--line);border-radius:6px;background:var(--paper);text-align:left;transition:background-color var(--feedback-duration) ease,border-color var(--feedback-duration) ease}
+.q-item.unread{background:#fdf1f1;border-color:#f1c7c8;border-left-color:var(--if-red)}
+.q-item.unread .q-name::after{content:"nova";margin-left:10px;padding:2px 8px;border-radius:10px;background:var(--if-red);color:var(--paper);font-size:12px;vertical-align:2px}
+@media(hover:hover) and (pointer:fine){.q-item:hover{border-color:var(--green-ink)}}
+.q-name{font-size:17px;font-weight:700;color:var(--green-ink)}
+.q-item:not(.unread) .q-name{color:var(--muted)}
+.q-term{display:inline-block;padding:2px 10px;border-radius:12px;background:var(--wash);color:var(--green-ink);font-size:14px;font-weight:700}
+.q-text{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:clamp(19px,1.7vw,24px);line-height:1.4;overflow-wrap:anywhere}
+.q-item:not(.unread) .q-text{color:var(--muted)}
+.q-empty{padding:24px 0;font-size:20px;color:var(--muted)}
+/* Pergunta aberta: nome, termo e "Fechar" ficam fixos; só o texto rola. */
+.q-detail{display:flex;flex-direction:column;align-items:flex-start;gap:14px;overflow:hidden}
+.q-detail:not([open]){display:none}
+.q-detail-name{margin:0;font-size:clamp(20px,1.8vw,26px);font-weight:700;color:var(--green-ink)}
+.q-detail-text{flex:1 1 auto;min-height:0;width:100%;margin:0;max-width:none;overflow:auto;font-size:clamp(28px,3.2vw,46px);line-height:1.3;letter-spacing:-.02em;overflow-wrap:anywhere;white-space:pre-wrap}
+.q-detail-text.long{font-size:clamp(20px,1.8vw,26px);line-height:1.5;letter-spacing:0;padding-right:8px}
+.q-detail form{align-self:flex-end;margin-top:8px}
+
+.q-toast-box{position:fixed;left:0;right:0;bottom:calc(var(--footer) + 12px);z-index:5;display:flex;justify-content:center;padding:0 24px;pointer-events:none}
+.q-toast{display:flex;flex-direction:column;align-items:flex-start;gap:6px;width:min(560px,100%);padding:16px 20px;border-radius:10px;background:var(--paper);color:var(--ink);border:1px solid var(--line);box-shadow:0 12px 32px rgb(21 25 21 / .18)}
+.q-toast .q-text{font-size:20px}
+@media(prefers-reduced-motion:reduce){.q-dialog[open]{animation:none}.questions-button:active{transform:none}}
+
 </style>
 <!-- Open Sans license
 Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
@@ -455,7 +496,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   <a class="skip-link" href="#slide">Ir para o slide</a>
   <header class="masthead">
     <span>IFRS <span class="campus">Campus Osório</span></span>
-    <span id="chapter">Oficina de IA aplicada</span>
+    <button id="questions" class="questions-button" type="button" aria-haspopup="dialog" aria-label="Perguntas" title="Perguntas (Q)">
+      <span aria-hidden="true">?</span>
+      <span id="questions-badge" class="questions-badge" hidden>0</span>
+    </button>
   </header>
   <main id="slide" class="slide" tabindex="-1" aria-label="Apresentação"></main>
   <footer class="controls">
@@ -476,6 +520,20 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   </footer>
   <div class="progress" role="progressbar" aria-label="Progresso da apresentação" aria-valuemin="1"><span></span></div>
   <p id="announcement" class="sr-only" role="status" aria-live="polite"></p>
+  <dialog id="questions-dialog" class="q-dialog" aria-labelledby="questions-title">
+    <div class="q-head">
+      <h2 id="questions-title">Perguntas</h2>
+      <form method="dialog"><button class="q-close">Fechar</button></form>
+    </div>
+    <ol id="questions-list" class="q-list"></ol>
+  </dialog>
+  <dialog id="question-detail" class="q-dialog q-detail" aria-labelledby="question-detail-name">
+    <p id="question-detail-name" class="q-detail-name"></p>
+    <p id="question-detail-term" class="q-term"></p>
+    <p id="question-detail-text" class="q-detail-text"></p>
+    <form method="dialog"><button class="q-close">Fechar</button></form>
+  </dialog>
+  <div id="question-toast" class="q-toast-box" aria-live="polite"></div>
   <noscript>Ative o JavaScript para navegar na apresentação.</noscript>
 <script>
 //---------------------------------------------------------------------
@@ -2783,11 +2841,13 @@ var qrcode = function() {
    check: avisos de precisão para revisar antes de falar.
    terms: termos do slide; cada um precisa ter definição em glossario.js. */
 
-/* Endereços dos QR codes. Ajuste "dicionario" se o repositório do GitHub Pages tiver outro nome. */
+/* Endereços dos QR codes e do banco (Firebase Realtime Database) do modo ao vivo e das perguntas.
+   Ajuste "dicionario" se o repositório do GitHub Pages tiver outro nome. */
 const WORKSHOP_LINKS = {
   "dicionario": "https://joaolucasdasilvaoliveira.github.io/oficina-ia-aplicada-ifrs/dicionario/",
   "github": "https://github.com/JoaoLucasDaSilvaOliveira",
-  "linkedin": "https://www.linkedin.com/in/jo%C3%A3o-lucas-da-silva-oliveira"
+  "linkedin": "https://www.linkedin.com/in/jo%C3%A3o-lucas-da-silva-oliveira",
+  "firebase": "https://oficina-ia-aplicada-default-rtdb.firebaseio.com"
 };
 
 const SLIDES = [
@@ -3365,6 +3425,155 @@ const REQUIREMENT_EXAMPLES = {
     }
   }
 
+  /* ---------- Modo ao vivo e perguntas (Firebase Realtime Database, por HTTP) ---------- */
+
+  const DB = linkFor("firebase");
+  const questions = new Map();
+  const toastQueue = [];
+  const questionsButton = document.querySelector("#questions");
+  const questionsBadge = document.querySelector("#questions-badge");
+  const listDialog = document.querySelector("#questions-dialog");
+  const detailDialog = document.querySelector("#question-detail");
+  let questionsLoaded = false;
+  let toastBusy = false;
+  let lastUnread = 0;
+  let liveChain = Promise.resolve();
+  let reopenList = false;
+
+  // O texto das perguntas vem do público: sempre escapado antes de entrar no HTML.
+  const escapeHtml = text => String(text ?? "").replace(/[&<>"']/g, char =>
+    ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"})[char]);
+
+  // Grava o slide atual para o dicionário seguir. As gravações saem em ordem.
+  function publishLive() {
+    if (!DB || typeof fetch !== "function") return;
+    const body = JSON.stringify({slide: SLIDES[index].id, indice: index});
+    liveChain = liveChain.then(() => fetch(`${DB}/ao-vivo.json`, {method: "PUT", body})).catch(() => {});
+  }
+
+  // Aplica um evento do streaming do Firebase (put substitui, patch mescla) ao mapa local.
+  function applyQuestions(type, path, data) {
+    const [id, field] = path.split("/").filter(Boolean);
+    if (!id) {
+      if (type === "put") questions.clear();
+      Object.entries(data || {}).forEach(([key, value]) => {
+        if (value === null) questions.delete(key);
+        else questions.set(key, value);
+      });
+    } else if (!field) {
+      if (data === null) questions.delete(id);
+      else questions.set(id, type === "patch" ? {...questions.get(id), ...data} : data);
+    } else if (questions.has(id)) {
+      questions.set(id, {...questions.get(id), [field]: data});
+    }
+  }
+
+  // Ordem de chegada: quem perguntou primeiro fica em cima.
+  const sortedQuestions = () => [...questions.entries()]
+    .filter(([, question]) => question && question.texto)
+    .sort(([idA, a], [idB, b]) => (a.criadaEm - b.criadaEm) || (idA < idB ? -1 : 1));
+
+  function updateQuestions() {
+    const unread = sortedQuestions().filter(([, question]) => !question.lida).length;
+    questionsBadge.textContent = String(unread);
+    questionsBadge.hidden = unread === 0;
+    questionsButton.setAttribute("aria-label", unread ? `Perguntas: ${unread} não ${unread === 1 ? "lida" : "lidas"}` : "Perguntas");
+    if (unread > lastUnread && questionsBadge.animate && !reducedMotion.matches) {
+      questionsBadge.animate([{transform: "scale(.6)"}, {transform: "scale(1.15)", offset: .6}, {transform: "scale(1)"}], {duration: 320, easing: EASE_OUT});
+    }
+    lastUnread = unread;
+    if (listDialog.open) renderQuestionList();
+  }
+
+  function renderQuestionList() {
+    const items = sortedQuestions();
+    document.querySelector("#questions-list").innerHTML = items.length
+      ? items.map(([id, question]) => `<li><button type="button" class="q-item${question.lida ? "" : " unread"}" data-question="${escapeHtml(id)}">
+          <span class="q-name">${escapeHtml(question.nome)}</span>${question.termo ? `<span class="q-term">sobre ${escapeHtml(question.termo)}</span>` : ""}
+          <span class="q-text">${escapeHtml(question.texto)}</span></button></li>`).join("")
+      : '<li class="q-empty">Nenhuma pergunta ainda.</li>';
+  }
+
+  function openQuestions() {
+    if (listDialog.open) return;
+    renderQuestionList();
+    listDialog.showModal?.();
+  }
+
+  // Abrir a pergunta já a marca como lida, no projetor e no banco.
+  function openQuestion(id) {
+    const question = questions.get(id);
+    if (!question) return;
+    document.querySelector("#question-detail-name").textContent = question.nome;
+    const term = document.querySelector("#question-detail-term");
+    term.textContent = question.termo ? `sobre ${question.termo}` : "";
+    term.hidden = !question.termo;
+    const text = document.querySelector("#question-detail-text");
+    text.textContent = question.texto;
+    // Pergunta longa ganha letra menor e começa do topo, mesmo com o foco no "Fechar".
+    text.classList.toggle("long", question.texto.length > 280 || question.texto.split("\n").length > 5);
+    text.scrollTop = 0;
+    // A pergunta aberta substitui a lista; ao fechar, a lista volta.
+    reopenList = Boolean(listDialog.open);
+    if (reopenList) listDialog.close?.();
+    detailDialog.showModal?.();
+    if (!question.lida) {
+      questions.set(id, {...question, lida: true});
+      updateQuestions();
+      if (DB && typeof fetch === "function") {
+        fetch(`${DB}/perguntas/${encodeURIComponent(id)}.json`, {method: "PATCH", body: JSON.stringify({lida: true})}).catch(() => {});
+      }
+    }
+  }
+
+  // Pergunta nova: card no centro inferior, sobe 24px e some em 5s. Várias chegam em fila.
+  function showNextToast() {
+    if (toastBusy || !toastQueue.length) return;
+    const question = questions.get(toastQueue.shift());
+    if (!question) return showNextToast();
+    const box = document.querySelector("#question-toast");
+    box.innerHTML = `<div class="q-toast"><span class="q-name">${escapeHtml(question.nome)}</span>${question.termo ? `<span class="q-term">sobre ${escapeHtml(question.termo)}</span>` : ""}<span class="q-text">${escapeHtml(question.texto)}</span></div>`;
+    const card = box.firstElementChild;
+    if (!card?.animate) {
+      box.innerHTML = "";
+      return showNextToast();
+    }
+    toastBusy = true;
+    const frames = reducedMotion.matches
+      ? [{opacity: .75}, {opacity: 0}]
+      : [{opacity: .75, translate: "0 0"}, {opacity: 0, translate: "0 -24px"}];
+    card.animate(frames, {duration: 5000, easing: "ease", fill: "forwards"}).finished
+      .catch(() => {})
+      .then(() => {
+        box.innerHTML = "";
+        toastBusy = false;
+        showNextToast();
+      });
+  }
+
+  // Um único streaming (EventSource) a partir do projetor; reconecta sozinho.
+  function listenQuestions() {
+    if (!DB || typeof EventSource !== "function") return;
+    const source = new EventSource(`${DB}/perguntas.json`);
+    const handle = type => event => {
+      let payload;
+      try {
+        payload = JSON.parse(event.data);
+      } catch {
+        return;
+      }
+      if (!payload || typeof payload.path !== "string") return;
+      const known = new Set(questions.keys());
+      applyQuestions(type, payload.path, payload.data);
+      if (questionsLoaded) [...questions.keys()].filter(id => !known.has(id)).forEach(id => toastQueue.push(id));
+      questionsLoaded = true;
+      updateQuestions();
+      showNextToast();
+    };
+    source.addEventListener("put", handle("put"));
+    source.addEventListener("patch", handle("patch"));
+  }
+
   function updateNavigation() {
     const totalReveals = slideElement.querySelectorAll(".reveal").length;
     previous.disabled = index === 0 && revealCount === 0;
@@ -3391,7 +3600,6 @@ const REQUIREMENT_EXAMPLES = {
       element.setAttribute("aria-hidden", String(!revealAll));
     });
     revealCount = revealAll ? slideElement.querySelectorAll(".reveal").length : 0;
-    document.querySelector("#chapter").textContent = slide.chapter;
     document.title = `${slide.title} · Além do Vibecoding`;
     if (updateHash && location.hash !== `#${slide.id}`) history.pushState(null, "", `#${slide.id}`);
     window.dispatchEvent(new CustomEvent("workshop:slidechange", {
@@ -3414,6 +3622,7 @@ const REQUIREMENT_EXAMPLES = {
     }
     announce(`Slide ${index + 1}: ${slide.title}`);
     publishState();
+    publishLive();
   }
 
   function advance() {
@@ -3519,6 +3728,25 @@ const REQUIREMENT_EXAMPLES = {
     announce(paused ? "Demonstração pausada." : "Demonstração retomada.");
   }
 
+  questionsButton.addEventListener("click", openQuestions);
+  // Fechar a pergunta (botão ou Esc) devolve a lista, se ela estava aberta.
+  const backToList = () => {
+    if (reopenList) {
+      reopenList = false;
+      if (detailDialog.open) detailDialog.close?.();
+      openQuestions();
+    }
+  };
+  detailDialog.querySelector?.("form")?.addEventListener("submit", event => {
+    event.preventDefault();
+    if (reopenList) backToList();
+    else detailDialog.close?.();
+  });
+  detailDialog.addEventListener("close", backToList);
+  document.querySelector("#questions-list").addEventListener("click", event => {
+    const item = event.target.closest("[data-question]");
+    if (item) openQuestion(item.dataset.question);
+  });
   previous.addEventListener("click", goBack);
   next.addEventListener("click", advance);
   fullscreen.addEventListener("click", toggleFullscreen);
@@ -3552,6 +3780,8 @@ const REQUIREMENT_EXAMPLES = {
   document.addEventListener("keydown", event => {
     if (event.ctrlKey || event.altKey || event.metaKey) return;
     if (event.target.closest("input, textarea, select, [contenteditable='true']")) return;
+    // Com a lista ou uma pergunta aberta, as teclas não trocam o slide (Esc fecha o dialog).
+    if (listDialog.open || detailDialog.open) return;
     if ([" ", "Enter"].includes(event.key) && event.target.closest("button, a")) return;
     switch (event.key) {
       case "ArrowRight": case "PageDown": case " ":
@@ -3563,6 +3793,7 @@ const REQUIREMENT_EXAMPLES = {
       case "f": case "F": event.preventDefault(); toggleFullscreen(); break;
       case "p": case "P": event.preventDefault(); toggleAutoplay(); break;
       case "n": case "N": event.preventDefault(); openPresenter(); break;
+      case "q": case "Q": event.preventDefault(); openQuestions(); break;
     }
   });
   window.addEventListener("message", event => handlePresenter(event.data, event.source));
@@ -3572,6 +3803,8 @@ const REQUIREMENT_EXAMPLES = {
   document.fonts?.ready.then(fitSlide);
   window.addEventListener("hashchange", () => {index = indexFromHash(); render({updateHash: false});});
   index = indexFromHash();
+  listenQuestions();
+  updateQuestions();
   render({updateHash: false});
 
   /* ---------- Janela do apresentador ---------- */

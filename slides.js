@@ -3,11 +3,13 @@
    check: avisos de precisão para revisar antes de falar.
    terms: termos do slide; cada um precisa ter definição em glossario.js. */
 
-/* Endereços dos QR codes. Ajuste "dicionario" se o repositório do GitHub Pages tiver outro nome. */
+/* Endereços dos QR codes e do banco (Firebase Realtime Database) do modo ao vivo e das perguntas.
+   Ajuste "dicionario" se o repositório do GitHub Pages tiver outro nome. */
 const WORKSHOP_LINKS = {
   "dicionario": "https://joaolucasdasilvaoliveira.github.io/oficina-ia-aplicada-ifrs/dicionario/",
   "github": "https://github.com/JoaoLucasDaSilvaOliveira",
-  "linkedin": "https://www.linkedin.com/in/jo%C3%A3o-lucas-da-silva-oliveira"
+  "linkedin": "https://www.linkedin.com/in/jo%C3%A3o-lucas-da-silva-oliveira",
+  "firebase": "https://oficina-ia-aplicada-default-rtdb.firebaseio.com"
 };
 
 const SLIDES = [

@@ -253,6 +253,155 @@
     }
   }
 
+  /* ---------- Modo ao vivo e perguntas (Firebase Realtime Database, por HTTP) ---------- */
+
+  const DB = linkFor("firebase");
+  const questions = new Map();
+  const toastQueue = [];
+  const questionsButton = document.querySelector("#questions");
+  const questionsBadge = document.querySelector("#questions-badge");
+  const listDialog = document.querySelector("#questions-dialog");
+  const detailDialog = document.querySelector("#question-detail");
+  let questionsLoaded = false;
+  let toastBusy = false;
+  let lastUnread = 0;
+  let liveChain = Promise.resolve();
+  let reopenList = false;
+
+  // O texto das perguntas vem do público: sempre escapado antes de entrar no HTML.
+  const escapeHtml = text => String(text ?? "").replace(/[&<>"']/g, char =>
+    ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"})[char]);
+
+  // Grava o slide atual para o dicionário seguir. As gravações saem em ordem.
+  function publishLive() {
+    if (!DB || typeof fetch !== "function") return;
+    const body = JSON.stringify({slide: SLIDES[index].id, indice: index});
+    liveChain = liveChain.then(() => fetch(`${DB}/ao-vivo.json`, {method: "PUT", body})).catch(() => {});
+  }
+
+  // Aplica um evento do streaming do Firebase (put substitui, patch mescla) ao mapa local.
+  function applyQuestions(type, path, data) {
+    const [id, field] = path.split("/").filter(Boolean);
+    if (!id) {
+      if (type === "put") questions.clear();
+      Object.entries(data || {}).forEach(([key, value]) => {
+        if (value === null) questions.delete(key);
+        else questions.set(key, value);
+      });
+    } else if (!field) {
+      if (data === null) questions.delete(id);
+      else questions.set(id, type === "patch" ? {...questions.get(id), ...data} : data);
+    } else if (questions.has(id)) {
+      questions.set(id, {...questions.get(id), [field]: data});
+    }
+  }
+
+  // Ordem de chegada: quem perguntou primeiro fica em cima.
+  const sortedQuestions = () => [...questions.entries()]
+    .filter(([, question]) => question && question.texto)
+    .sort(([idA, a], [idB, b]) => (a.criadaEm - b.criadaEm) || (idA < idB ? -1 : 1));
+
+  function updateQuestions() {
+    const unread = sortedQuestions().filter(([, question]) => !question.lida).length;
+    questionsBadge.textContent = String(unread);
+    questionsBadge.hidden = unread === 0;
+    questionsButton.setAttribute("aria-label", unread ? `Perguntas: ${unread} não ${unread === 1 ? "lida" : "lidas"}` : "Perguntas");
+    if (unread > lastUnread && questionsBadge.animate && !reducedMotion.matches) {
+      questionsBadge.animate([{transform: "scale(.6)"}, {transform: "scale(1.15)", offset: .6}, {transform: "scale(1)"}], {duration: 320, easing: EASE_OUT});
+    }
+    lastUnread = unread;
+    if (listDialog.open) renderQuestionList();
+  }
+
+  function renderQuestionList() {
+    const items = sortedQuestions();
+    document.querySelector("#questions-list").innerHTML = items.length
+      ? items.map(([id, question]) => `<li><button type="button" class="q-item${question.lida ? "" : " unread"}" data-question="${escapeHtml(id)}">
+          <span class="q-name">${escapeHtml(question.nome)}</span>${question.termo ? `<span class="q-term">sobre ${escapeHtml(question.termo)}</span>` : ""}
+          <span class="q-text">${escapeHtml(question.texto)}</span></button></li>`).join("")
+      : '<li class="q-empty">Nenhuma pergunta ainda.</li>';
+  }
+
+  function openQuestions() {
+    if (listDialog.open) return;
+    renderQuestionList();
+    listDialog.showModal?.();
+  }
+
+  // Abrir a pergunta já a marca como lida, no projetor e no banco.
+  function openQuestion(id) {
+    const question = questions.get(id);
+    if (!question) return;
+    document.querySelector("#question-detail-name").textContent = question.nome;
+    const term = document.querySelector("#question-detail-term");
+    term.textContent = question.termo ? `sobre ${question.termo}` : "";
+    term.hidden = !question.termo;
+    const text = document.querySelector("#question-detail-text");
+    text.textContent = question.texto;
+    // Pergunta longa ganha letra menor e começa do topo, mesmo com o foco no "Fechar".
+    text.classList.toggle("long", question.texto.length > 280 || question.texto.split("\n").length > 5);
+    text.scrollTop = 0;
+    // A pergunta aberta substitui a lista; ao fechar, a lista volta.
+    reopenList = Boolean(listDialog.open);
+    if (reopenList) listDialog.close?.();
+    detailDialog.showModal?.();
+    if (!question.lida) {
+      questions.set(id, {...question, lida: true});
+      updateQuestions();
+      if (DB && typeof fetch === "function") {
+        fetch(`${DB}/perguntas/${encodeURIComponent(id)}.json`, {method: "PATCH", body: JSON.stringify({lida: true})}).catch(() => {});
+      }
+    }
+  }
+
+  // Pergunta nova: card no centro inferior, sobe 24px e some em 5s. Várias chegam em fila.
+  function showNextToast() {
+    if (toastBusy || !toastQueue.length) return;
+    const question = questions.get(toastQueue.shift());
+    if (!question) return showNextToast();
+    const box = document.querySelector("#question-toast");
+    box.innerHTML = `<div class="q-toast"><span class="q-name">${escapeHtml(question.nome)}</span>${question.termo ? `<span class="q-term">sobre ${escapeHtml(question.termo)}</span>` : ""}<span class="q-text">${escapeHtml(question.texto)}</span></div>`;
+    const card = box.firstElementChild;
+    if (!card?.animate) {
+      box.innerHTML = "";
+      return showNextToast();
+    }
+    toastBusy = true;
+    const frames = reducedMotion.matches
+      ? [{opacity: .75}, {opacity: 0}]
+      : [{opacity: .75, translate: "0 0"}, {opacity: 0, translate: "0 -24px"}];
+    card.animate(frames, {duration: 5000, easing: "ease", fill: "forwards"}).finished
+      .catch(() => {})
+      .then(() => {
+        box.innerHTML = "";
+        toastBusy = false;
+        showNextToast();
+      });
+  }
+
+  // Um único streaming (EventSource) a partir do projetor; reconecta sozinho.
+  function listenQuestions() {
+    if (!DB || typeof EventSource !== "function") return;
+    const source = new EventSource(`${DB}/perguntas.json`);
+    const handle = type => event => {
+      let payload;
+      try {
+        payload = JSON.parse(event.data);
+      } catch {
+        return;
+      }
+      if (!payload || typeof payload.path !== "string") return;
+      const known = new Set(questions.keys());
+      applyQuestions(type, payload.path, payload.data);
+      if (questionsLoaded) [...questions.keys()].filter(id => !known.has(id)).forEach(id => toastQueue.push(id));
+      questionsLoaded = true;
+      updateQuestions();
+      showNextToast();
+    };
+    source.addEventListener("put", handle("put"));
+    source.addEventListener("patch", handle("patch"));
+  }
+
   function updateNavigation() {
     const totalReveals = slideElement.querySelectorAll(".reveal").length;
     previous.disabled = index === 0 && revealCount === 0;
@@ -279,7 +428,6 @@
       element.setAttribute("aria-hidden", String(!revealAll));
     });
     revealCount = revealAll ? slideElement.querySelectorAll(".reveal").length : 0;
-    document.querySelector("#chapter").textContent = slide.chapter;
     document.title = `${slide.title} · Além do Vibecoding`;
     if (updateHash && location.hash !== `#${slide.id}`) history.pushState(null, "", `#${slide.id}`);
     window.dispatchEvent(new CustomEvent("workshop:slidechange", {
@@ -302,6 +450,7 @@
     }
     announce(`Slide ${index + 1}: ${slide.title}`);
     publishState();
+    publishLive();
   }
 
   function advance() {
@@ -407,6 +556,25 @@
     announce(paused ? "Demonstração pausada." : "Demonstração retomada.");
   }
 
+  questionsButton.addEventListener("click", openQuestions);
+  // Fechar a pergunta (botão ou Esc) devolve a lista, se ela estava aberta.
+  const backToList = () => {
+    if (reopenList) {
+      reopenList = false;
+      if (detailDialog.open) detailDialog.close?.();
+      openQuestions();
+    }
+  };
+  detailDialog.querySelector?.("form")?.addEventListener("submit", event => {
+    event.preventDefault();
+    if (reopenList) backToList();
+    else detailDialog.close?.();
+  });
+  detailDialog.addEventListener("close", backToList);
+  document.querySelector("#questions-list").addEventListener("click", event => {
+    const item = event.target.closest("[data-question]");
+    if (item) openQuestion(item.dataset.question);
+  });
   previous.addEventListener("click", goBack);
   next.addEventListener("click", advance);
   fullscreen.addEventListener("click", toggleFullscreen);
@@ -440,6 +608,8 @@
   document.addEventListener("keydown", event => {
     if (event.ctrlKey || event.altKey || event.metaKey) return;
     if (event.target.closest("input, textarea, select, [contenteditable='true']")) return;
+    // Com a lista ou uma pergunta aberta, as teclas não trocam o slide (Esc fecha o dialog).
+    if (listDialog.open || detailDialog.open) return;
     if ([" ", "Enter"].includes(event.key) && event.target.closest("button, a")) return;
     switch (event.key) {
       case "ArrowRight": case "PageDown": case " ":
@@ -451,6 +621,7 @@
       case "f": case "F": event.preventDefault(); toggleFullscreen(); break;
       case "p": case "P": event.preventDefault(); toggleAutoplay(); break;
       case "n": case "N": event.preventDefault(); openPresenter(); break;
+      case "q": case "Q": event.preventDefault(); openQuestions(); break;
     }
   });
   window.addEventListener("message", event => handlePresenter(event.data, event.source));
@@ -460,6 +631,8 @@
   document.fonts?.ready.then(fitSlide);
   window.addEventListener("hashchange", () => {index = indexFromHash(); render({updateHash: false});});
   index = indexFromHash();
+  listenQuestions();
+  updateQuestions();
   render({updateHash: false});
 
   /* ---------- Janela do apresentador ---------- */
