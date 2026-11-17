@@ -8,6 +8,14 @@ Apresentação projetada da oficina e o dicionário que a plateia acompanha no c
 Quem conduz a oficina e controla os slides. É o único que lê as perguntas.
 _Evite_: palestrante, admin
 
+**Nota**:
+O texto que o apresentador vai falar em um slide, tirado do roteiro. Quando o slide não está no roteiro, é uma sugestão.
+_Evite_: fala, script
+
+**Comando**:
+Pedido do celular do apresentador para a apresentação avançar, voltar ou ir a um slide. Cada comando é executado uma vez.
+_Evite_: ação, evento
+
 **Slide atual**:
 O slide que a apresentação está mostrando agora.
 _Evite_: slide ativo, página atual

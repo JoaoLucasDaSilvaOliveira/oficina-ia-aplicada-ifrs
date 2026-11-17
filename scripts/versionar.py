@@ -9,7 +9,7 @@ import hashlib
 import re
 
 root = Path(__file__).resolve().parent.parent
-PAGES = [root / "index.html", root / "dicionario" / "index.html"]
+PAGES = [root / "index.html", root / "dicionario" / "index.html", root / "apresentador" / "index.html"]
 REF = re.compile(r'(?P<attr>(?:src|href)=")(?P<path>[^"?#:]+\.(?:css|js))(?:\?v=[0-9a-f]+)?(?P<end>")')
 
 

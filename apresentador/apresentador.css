@@ -1,0 +1,54 @@
+@font-face{font-family:"Open Sans";src:url("../assets/open-sans-regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Open Sans";src:url("../assets/open-sans-bold.ttf") format("truetype");font-weight:700 900;font-display:swap}
+:root{
+  color-scheme:only light;
+  --if-green:#2f9e41;--if-red:#cd191e;--paper:#fff;--ink:#151915;
+  --green-ink:#216f2e;--muted:#566056;--line:#d6ded6;--wash:#f0f6f0;
+  --ease-out:cubic-bezier(0.23,1,0.32,1);--gutter:20px;
+  font-family:"Open Sans",Arial,sans-serif;color:var(--ink);background:var(--paper);
+  font-synthesis:none;-webkit-text-size-adjust:100%;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;min-height:100svh;display:flex;flex-direction:column;background:var(--paper)}
+h1,p{margin:0}
+button,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--if-red);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.a-top{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(10px + env(safe-area-inset-top)) var(--gutter) 10px;background:var(--paper);border-bottom:1px solid var(--line)}
+.a-where{display:flex;flex-direction:column;gap:2px;min-width:0}
+.a-counter{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
+.a-status{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--if-red)}
+.a-status::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.a-status.ok{color:var(--green-ink)}
+.a-timer{min-height:48px;padding:0 16px;border:1px solid var(--line);border-radius:10px;background:var(--paper);font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;transition:border-color 180ms ease,color 180ms ease}
+.a-timer.armed{border-color:var(--if-red);color:var(--if-red)}
+
+.a-main{flex:1;width:100%;max-width:760px;margin:0 auto;padding:20px var(--gutter) 24px}
+.a-chapter{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.a-title{font-size:26px;line-height:1.15;letter-spacing:-.03em;color:var(--if-green)}
+.a-step{margin-top:6px;font-size:14px;color:var(--muted)}
+.a-step:empty{display:none}
+.a-notes{margin-top:18px;font-size:21px;line-height:1.55;white-space:pre-line;overflow-wrap:anywhere}
+.a-notes strong{color:var(--green-ink)}
+.a-cue{font-style:normal;font-weight:700;color:var(--if-red)}
+.a-cue::before{content:"["}.a-cue::after{content:"]"}
+.a-suggestion{display:inline-block;margin-bottom:10px;padding:4px 10px;border-radius:999px;background:var(--wash);color:var(--muted);font-size:13px;font-weight:700;white-space:normal}
+.a-check{margin-top:24px;padding-top:14px;border-top:1px solid var(--line);font-size:15px;line-height:1.55;color:var(--muted)}
+.a-check summary{min-height:44px;display:flex;align-items:center;font-weight:700;cursor:pointer}
+
+.a-controls{position:sticky;bottom:0;z-index:2;display:flex;flex-direction:column;gap:10px;padding:12px var(--gutter) calc(14px + env(safe-area-inset-bottom));background:var(--paper);border-top:1px solid var(--line);box-shadow:0 -8px 24px rgb(21 25 21 / .06)}
+.a-next{display:flex;gap:8px;align-items:baseline;font-size:14px;line-height:1.35;min-width:0}
+.a-next span{flex:none;font-size:12px;font-weight:700;color:var(--green-ink);text-transform:uppercase;letter-spacing:.06em}
+.a-next strong{font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.a-jump select{width:100%;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--wash);font-size:15px;font-weight:700}
+.a-buttons{display:grid;grid-template-columns:1fr 2fr;gap:10px}
+.a-buttons button{min-height:68px;border-radius:14px;font-size:20px;font-weight:700;cursor:pointer;touch-action:manipulation;transition:transform 140ms var(--ease-out),background-color 180ms ease,opacity 180ms ease}
+.a-prev{border:1px solid var(--line);background:var(--paper)}
+.a-forward{border:0;background:var(--green-ink);color:var(--paper)}
+.a-buttons button:active:not(:disabled){transform:scale(.97)}
+.a-buttons button:disabled{opacity:.35;cursor:default}
+.a-buttons button.sending{opacity:.7}
+@media(hover:hover) and (pointer:fine){.a-forward:hover:not(:disabled){background:#174f20}.a-prev:hover:not(:disabled){background:var(--wash)}}
+@media(prefers-reduced-motion:reduce){.a-buttons button:active:not(:disabled){transform:none}}

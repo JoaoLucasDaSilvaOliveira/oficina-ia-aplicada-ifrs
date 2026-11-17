@@ -7,6 +7,11 @@
       ".write": true,
       ".validate": "newData.hasChildren(['slide', 'indice']) && newData.child('slide').isString() && newData.child('indice').isNumber()"
     },
+    "comando": {
+      ".read": true,
+      ".write": true,
+      ".validate": "newData.hasChildren(['acao', 'id']) && newData.child('acao').isString() && newData.child('id').isString()"
+    },
     "perguntas": {
       ".read": true,
       "$id": {

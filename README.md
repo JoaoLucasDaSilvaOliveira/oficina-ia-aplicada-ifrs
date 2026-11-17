@@ -16,21 +16,29 @@ A versão `apresentacao.html`, quando empacotada, reúne tudo em um único arqui
 | Primeiro / último slide | Home / End |
 | Tela cheia | F |
 | Pausar / retomar a demonstração automática | P |
-| Abrir a janela do apresentador | N |
+| Abrir o apresentador numa janela | N |
 | Abrir as perguntas | Q |
 
 Os controles visíveis também funcionam por toque. O rodapé mostra a navegação,
 a tela cheia e, nos dois exemplos automáticos, um botão de pausa opcional.
 As notas e referências continuam editáveis em `slides.js`, fora da projeção.
 
-## Janela do apresentador
+## Apresentador no celular
 
-A tecla N abre uma segunda janela, para o seu notebook, com a fala do slide
-atual (campo `notes`), as indicações de palco entre colchetes, os avisos de
-precisão (campo `check`), o próximo conteúdo, a contagem de revelações e um
-cronômetro (clique ou T para zerar). As setas e os botões dessa janela controlam
-a projeção. Se o navegador bloquear a janela, permita pop-ups para a página.
-Funciona também no `apresentacao.html` único (a mesma página com `?presenter`).
+`apresentador/` é a página para controlar a projeção pelo celular:
+`https://joaolucasdasilvaoliveira.github.io/oficina-ia-aplicada-ifrs/apresentador/`.
+Ela mostra o slide atual, a nota do slide, o próximo conteúdo, a contagem de
+revelações e um cronômetro (dois toques zeram). Os botões Voltar e Avançar e a
+lista de slides mandam comandos pelo Firebase (`comando`), e a projeção executa
+cada um uma vez. A página mantém a tela do celular acesa. Não tem login: quem
+souber o endereço consegue controlar os slides. No notebook, a tecla N abre a
+mesma página numa janela.
+
+As notas (campo `notes` de `slides.js`) são o texto do roteiro
+(`IDEIAS PALESTRA OFICINA.txt`), com duas correções: Fortran (trocado por C) e
+"Coordenações de Curso". Slides que não estão no roteiro trazem uma fala marcada
+como sugestão. Termos entre `**` aparecem em destaque e indicações entre
+colchetes, em vermelho.
 
 Os slides 21 e 31 alternam suas opções a cada 3 segundos. A troca de slide
 encerra o ciclo; voltar a ele reinicia a primeira opção. A troca de aba pausa
@@ -119,7 +127,8 @@ Para gerar novamente o HTML independente e o ZIP, execute
 `python3 scripts/package.py`. A saída vai para `entrega/`.
 
 Antes de publicar no GitHub Pages, execute `python3 scripts/versionar.py`. Ele
-coloca `?v=<hash>` no endereço de cada CSS e JS das páginas, para o navegador
+coloca `?v=<hash>` no endereço de cada CSS e JS das páginas (apresentação,
+dicionário e apresentador), para o navegador
 não misturar arquivos novos com antigos guardados em cache (o Pages manda
 guardar por 10 minutos). O teste falha se alguma versão estiver desatualizada.
 

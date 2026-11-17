@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="only light">
+  <meta name="robots" content="noindex">
+  <title>Apresentador · Além do Vibecoding</title>
+  <link rel="stylesheet" href="apresentador.css?v=1cf9ad12bf">
+  <script src="../slides.js?v=a8e407b938" defer></script>
+  <script src="apresentador.js?v=7245d5eb77" defer></script>
+</head>
+<body>
+  <header class="a-top">
+    <div class="a-where">
+      <span id="counter" class="a-counter">-- / --</span>
+      <span id="status" class="a-status" role="status">Conectando…</span>
+    </div>
+    <button id="timer" class="a-timer" type="button" aria-label="Cronômetro. Toque duas vezes para zerar.">00:00</button>
+  </header>
+
+  <main class="a-main">
+    <p id="chapter" class="a-chapter"></p>
+    <h1 id="title" class="a-title">Aguardando a apresentação…</h1>
+    <p id="step" class="a-step"></p>
+    <div id="notes" class="a-notes" aria-live="polite"></div>
+    <details id="check-box" class="a-check" hidden>
+      <summary>Atenção</summary>
+      <p id="check"></p>
+    </details>
+  </main>
+
+  <footer class="a-controls">
+    <p class="a-next"><span>A seguir</span> <strong id="next-label">—</strong></p>
+    <label class="a-jump">
+      <span class="sr-only">Ir para o slide</span>
+      <select id="jump"></select>
+    </label>
+    <div class="a-buttons">
+      <button id="prev" class="a-prev" type="button">Voltar</button>
+      <button id="forward" class="a-forward" type="button">Avançar</button>
+    </div>
+  </footer>
+  <noscript>Ative o JavaScript para controlar a apresentação.</noscript>
+</body>
+</html>

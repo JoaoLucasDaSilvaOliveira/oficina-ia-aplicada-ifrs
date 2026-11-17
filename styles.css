@@ -298,28 +298,6 @@ h3,.flow li,.file-label,.byline strong,.memory output,.masthead>span:first-child
   .build-steps li{padding:8px 0;font-size:18px}
 }
 
-/* Janela do apresentador (?presenter): não é projetada. */
-.presenter-view body{display:grid;grid-template-rows:auto minmax(0,1fr);height:100dvh;overflow:hidden;background:var(--paper)}
-.pv-head{display:flex;align-items:center;gap:24px;padding:14px 32px;border-bottom:1px solid var(--line);font-size:16px}
-#pv-counter{font-weight:700;font-variant-numeric:tabular-nums}
-#pv-chapter{color:var(--muted);flex:1}
-.pv-timer{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;background:none;border:1px solid var(--line);border-radius:4px;padding:8px 14px;min-height:48px}
-.pv-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,340px);min-height:0}
-.pv-notes{padding:28px 40px;overflow:auto}
-.pv-notes h1{font-size:clamp(28px,3vw,44px);color:var(--if-green);max-width:none;margin-bottom:12px}
-.pv-step{font-size:16px;color:var(--muted);margin:0 0 16px}
-.pv-speech{font-size:clamp(20px,1.9vw,28px);line-height:1.55;max-width:62ch}
-.pv-cue{font-style:normal;font-weight:700;color:var(--if-red)}
-.pv-cue::before{content:"["}.pv-cue::after{content:"]"}
-.pv-check{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);font-size:16px;line-height:1.55;color:var(--muted);max-width:70ch}
-.pv-side{border-left:1px solid var(--line);padding:28px;display:flex;flex-direction:column;gap:14px;background:var(--wash);min-height:0;overflow:auto}
-.pv-label{font-size:14px;font-weight:700;color:var(--green-ink);text-transform:uppercase;letter-spacing:.06em}
-.pv-next{font-size:20px;line-height:1.45;margin:0}
-.pv-status{font-size:15px;line-height:1.5;color:var(--if-red);margin:0}
-.pv-nav{display:flex;gap:10px;margin-top:auto}
-.pv-nav button{flex:1;min-height:56px;border:1px solid var(--line);background:var(--paper);border-radius:4px;font-size:18px;font-weight:700}
-.pv-nav button:hover:not(:disabled){border-color:var(--green-ink)}
-@media(max-width:760px){.pv-main{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto}.pv-side{border-left:0;border-top:1px solid var(--line)}.pv-notes{padding:20px}}
 .build-steps li{grid-template-columns:minmax(0,11ch) minmax(0,1fr)}
 .row:has(.tag-id){align-items:center}
 @media(min-width:651px){.stack:has(> :nth-child(4)){grid-template-columns:repeat(4,minmax(0,1fr));gap:32px}}

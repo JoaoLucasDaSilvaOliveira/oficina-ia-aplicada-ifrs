@@ -30,7 +30,7 @@ html = html.replace("</head>", f"<!-- Open Sans license\n{license_text}\n-->\n</
 (output / "apresentacao.html").write_text(html)
 
 paths = [root / name for name in ("index.html", "styles.css", "slides.js", "app.js", "glossario.js", "README.md")]
-for folder in ("assets", "docs", "tests", "scripts", "dicionario"):
+for folder in ("assets", "docs", "tests", "scripts", "dicionario", "apresentador"):
     paths.extend(path for path in (root / folder).rglob("*") if path.is_file() and "__pycache__" not in path.parts)
 with zipfile.ZipFile(output / "oficina-ia-slides.zip", "w", zipfile.ZIP_DEFLATED) as archive:
     for path in paths:

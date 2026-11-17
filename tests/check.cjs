@@ -175,24 +175,25 @@ setImmediate(() => {
   assert.ok(live.length > 10, "a apresentação publica o slide atual");
   // A última gravação corresponde ao slide que ficou na tela no fim do teste.
   const id = main.dataset.slideId;
-  assert.deepEqual(live.at(-1), {url: "https://oficina-ia-aplicada-default-rtdb.firebaseio.com/ao-vivo.json", method: "PUT", body: {slide: id, indice: slides.findIndex(slide => slide.id === id)}});
+  assert.deepEqual(live.at(-1), {url: "https://oficina-ia-aplicada-default-rtdb.firebaseio.com/ao-vivo.json", method: "PUT", body: {slide: id, indice: slides.findIndex(slide => slide.id === id), revelacao: 0, revelacoes: main.reveals.length}});
   console.log("OK: ao vivo publica o slide atual em ordem.");
 });
 
 // Perguntas: o streaming carrega as existentes sem card, e o contador mostra as não lidas.
-assert.equal(streams.length, 1);
-assert.match(streams[0].url, /\/perguntas\.json$/);
+assert.equal(streams.length, 2, "um streaming para perguntas e outro para comandos");
+const questionStream = streams.find(stream => stream.url.endsWith("/perguntas.json"));
+assert.ok(questionStream);
 const badge = getElement("#questions-badge");
-streams[0].emit("put", {path: "/", data: {
+questionStream.emit("put", {path: "/", data: {
   a1: {nome: "Ana", texto: "O que é SDD?", termo: "Spec-Driven Development", criadaEm: 1, lida: true},
   b2: {nome: "Bruno", texto: "<img src=x onerror=alert(1)>", criadaEm: 2, lida: false}
 }});
 assert.equal(badge.textContent, "1"); assert.equal(badge.hidden, false);
-streams[0].emit("put", {path: "/c3", data: {nome: "Caio", texto: "E o Docker?", criadaEm: 3, lida: false}});
+questionStream.emit("put", {path: "/c3", data: {nome: "Caio", texto: "E o Docker?", criadaEm: 3, lida: false}});
 assert.equal(badge.textContent, "2");
-streams[0].emit("patch", {path: "/b2", data: {lida: true}});
+questionStream.emit("patch", {path: "/b2", data: {lida: true}});
 assert.equal(badge.textContent, "1");
-streams[0].emit("put", {path: "/c3/lida", data: true});
+questionStream.emit("put", {path: "/c3/lida", data: true});
 assert.equal(badge.textContent, "0"); assert.equal(badge.hidden, true);
 // A lista sai em ordem de chegada e com o texto do público escapado.
 getElement("#questions").listeners.click();
@@ -200,25 +201,37 @@ const listHtml = getElement("#questions-list").innerHTML;
 assert.ok(listHtml.indexOf("Ana") < listHtml.indexOf("Bruno") && listHtml.indexOf("Bruno") < listHtml.indexOf("Caio"));
 assert.ok(!listHtml.includes("<img"), "texto do público é escapado");
 // Abrir uma pergunta não lida a marca como lida no banco.
-streams[0].emit("put", {path: "/d4", data: {nome: "Dani", texto: "Pergunta nova", criadaEm: 4, lida: false}});
+questionStream.emit("put", {path: "/d4", data: {nome: "Dani", texto: "Pergunta nova", criadaEm: 4, lida: false}});
 assert.equal(badge.textContent, "1");
 getElement("#questions-list").listeners.click({target: {closest: () => ({dataset: {question: "d4"}})}});
 assert.equal(badge.textContent, "0");
 assert.deepEqual(requests.at(-1), {url: "https://oficina-ia-aplicada-default-rtdb.firebaseio.com/perguntas/d4.json", method: "PATCH", body: {lida: true}});
-streams[0].emit("put", {path: "/d4", data: null});
+questionStream.emit("put", {path: "/d4", data: null});
 
-// Janela do apresentador: pede o estado, navega e recebe o estado de volta.
-const posted = [];
-const presenter = {postMessage(message) {posted.push(message);}};
+// Celular do apresentador: o primeiro evento só registra o último comando; os seguintes são executados uma vez.
+const commands = streams.find(stream => stream.url.endsWith("/comando.json"));
+assert.ok(commands, "a projeção escuta os comandos do celular");
 navigate("abertura");
-window.listeners.message({data: {workshop: true, type: "hello"}, source: presenter});
-assert.equal(posted.at(-1).type, "state"); assert.equal(posted.at(-1).index, 0);
-window.listeners.message({data: {workshop: true, type: "next"}, source: presenter});
-assert.equal(main.dataset.slideId, "apresentacao"); assert.equal(posted.at(-1).index, 1);
-window.listeners.message({data: {type: "next"}, source: presenter});
-assert.equal(main.dataset.slideId, "apresentacao", "mensagens sem a marca são ignoradas");
-window.listeners.message({data: {workshop: true, type: "prev"}, source: presenter});
-assert.equal(main.dataset.slideId, "abertura");
+commands.emit("put", {path: "/", data: {acao: "avancar", id: "antigo"}});
+assert.equal(main.dataset.slideId, "abertura", "o comando antigo não é repetido ao abrir");
+commands.emit("put", {path: "/", data: {acao: "avancar", id: "c1"}});
+assert.equal(main.dataset.slideId, "apresentacao");
+commands.emit("put", {path: "/", data: {acao: "avancar", id: "c1"}});
+assert.equal(main.dataset.slideId, "apresentacao", "o mesmo comando não roda duas vezes");
+commands.emit("put", {path: "/", data: {acao: "ir", slide: "casa", id: "c2"}});
+assert.equal(main.dataset.slideId, "casa");
+commands.emit("put", {path: "/", data: {acao: "voltar", id: "c3"}});
+assert.equal(main.dataset.slideId, "responsabilidade");
+commands.emit("put", {path: "/", data: {acao: "ir", slide: "inexistente", id: "c4"}});
+assert.equal(main.dataset.slideId, "responsabilidade");
+navigate("abertura");
+
+// Notas: o texto do roteiro, com as correções pedidas; slides fora do roteiro marcados como sugestão.
+const noteOf = id => slides.find(slide => slide.id === id).notes;
+assert.match(noteOf("escada"), /Assembly e C/); assert.doesNotMatch(noteOf("escada"), /Fortran/);
+assert.match(noteOf("formulario"), /Coordenações de Curso/);
+assert.match(noteOf("casa"), /^\[Sugestão\]/);
+assert.doesNotMatch(noteOf("decisao"), /^\[Sugestão\]/);
 
 // Geometria simulada: escala uniforme preserva o conteúdo nas duas dimensões.
 const content = main.querySelector(".slide-content");
@@ -238,7 +251,7 @@ const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 assert.doesNotMatch(html, /id="(?:help|notes|step-hint|dialog)"/);
 assert.match(html, /name="color-scheme" content="only light"/);
 assert.ok(!slides.some(slide => slide.chapter === "Instruções reutilizáveis"));
-for (const asset of ["styles.css", "slides.js", "app.js", "glossario.js", "assets/qrcode.js", "assets/joao-lucas.jpg", "dicionario/index.html", "dicionario/dicionario.js", "dicionario/dicionario.css", "assets/open-sans-regular.ttf", "assets/open-sans-bold.ttf", "assets/OFL.txt"]) {
+for (const asset of ["styles.css", "slides.js", "app.js", "glossario.js", "assets/qrcode.js", "assets/joao-lucas.jpg", "dicionario/index.html", "dicionario/dicionario.js", "dicionario/dicionario.css", "apresentador/index.html", "apresentador/apresentador.js", "apresentador/apresentador.css", "assets/open-sans-regular.ttf", "assets/open-sans-bold.ttf", "assets/OFL.txt"]) {
   assert.ok(fs.existsSync(path.join(root, asset)), asset);
 }
 assert.ok(animations.length > motionCount);
@@ -246,7 +259,7 @@ assert.ok(animations.slice(motionCount).every(animation => animation.frames.ever
   "movimento reduzido mantém só opacidade");
 // As páginas carregam CSS e JS com ?v=<hash> atual (rode scripts/versionar.py antes de publicar).
 const crypto = require("node:crypto");
-for (const page of ["index.html", "dicionario/index.html"]) {
+for (const page of ["index.html", "dicionario/index.html", "apresentador/index.html"]) {
   const text = fs.readFileSync(path.join(root, page), "utf8");
   for (const [, ref, stamp] of text.matchAll(/(?:src|href)="([^"?#:]+\.(?:css|js))(?:\?v=([0-9a-f]+))?"/g)) {
     const file = path.join(root, path.dirname(page), ref);
@@ -254,4 +267,4 @@ for (const page of ["index.html", "dicionario/index.html"]) {
     assert.equal(stamp, expected, `${page}: ${ref} com versão desatualizada; rode python3 scripts/versionar.py`);
   }
 }
-console.log("OK: 36 slides; dicionário; ao vivo; perguntas; apresentador; navegação; revelações; timers de 3s; pausa; visibilidade; limpeza; geometria simulada; tema claro; eventos e assets.");
+console.log("OK: 36 slides; dicionário; ao vivo; perguntas; celular do apresentador; notas do roteiro; navegação; revelações; timers de 3s; pausa; visibilidade; limpeza; geometria simulada; tema claro; eventos e assets.");

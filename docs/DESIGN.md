@@ -29,7 +29,7 @@ de trabalho e exemplos de código. Verde pleno marca as transições conceituais
 vermelho pontua o título e o progresso. Não usar grids de cartões como padrão.
 
 O rodapé se limita à navegação, tela cheia e pausa opcional das demonstrações.
-A fala e os avisos ficam na janela do apresentador (tecla N), que não é projetada.
+A fala e os avisos ficam no apresentador do celular (`apresentador/`, ou tecla N no notebook), que não é projetado.
 Não há sidebar, ajuda, notas projetadas ou instrução de navegação. Os slides
 continuam sob controle do apresentador; só as opções dos exemplos 21 e 31
 alternam automaticamente, a cada 3 segundos. Os destaques vermelhos são
@@ -98,3 +98,11 @@ sumindo em 5s; com movimento reduzido, só some. A lista e a pergunta aberta sã
 dialogs modais, legíveis no projetor; as não lidas têm fundo rosado, faixa e
 selo "nova" em vermelho. No dicionário, uma barra fixa no topo traz o modo ao
 vivo e "Fazer uma pergunta"; cada termo tem a etiqueta "Perguntar".
+
+## Apresentador no celular
+
+Uma coluna, tema claro, pensada para olhar de relance no palco: número do slide
+e cronômetro fixos no topo, nota em 21px no meio e, fixos embaixo, o próximo
+conteúdo, a lista de slides e os botões Voltar (1/3) e Avançar (2/3), com 68px de
+altura para o polegar. Indicações de palco em vermelho; falas fora do roteiro
+levam a etiqueta "Sugestão".

@@ -1,12 +1,6 @@
 (() => {
   "use strict";
 
-  // A mesma página abre a janela do apresentador com ?presenter (inclusive no HTML único).
-  if (/[?&]presenter(?:[=&]|$)/.test(location.search || "")) {
-    runPresenter();
-    return;
-  }
-
   const slideElement = document.querySelector("#slide");
   const previous = document.querySelector("#previous");
   const next = document.querySelector("#next");
@@ -35,7 +29,6 @@
     unfurl: {frames: [{transform: "scaleX(0)", offset: 0}], duration: 620, easing: EASE_OUT},
     fade: {frames: [{opacity: 0, offset: 0}], duration: 700, easing: "ease"}
   };
-  const CHANNEL_NAME = "workshop-presenter";
   const demoModes = ["reference", "copy"];
   const requirementModes = Object.keys(REQUIREMENT_EXAMPLES);
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -47,13 +40,6 @@
   let fitObserver = null;
   let settling = false;
   let motionToken = 0;
-  let presenterWindow = null;
-  let channel = null;
-  try {
-    channel = typeof BroadcastChannel === "function" ? new BroadcastChannel(CHANNEL_NAME) : null;
-  } catch {
-    channel = null;
-  }
 
   function indexFromHash() {
     const found = SLIDES.findIndex(slide => slide.id === location.hash.slice(1));
@@ -272,10 +258,11 @@
   const escapeHtml = text => String(text ?? "").replace(/[&<>"']/g, char =>
     ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"})[char]);
 
-  // Grava o slide atual para o dicionário seguir. As gravações saem em ordem.
+  // Grava o slide atual (e as revelações) para o dicionário e o celular do apresentador. As gravações saem em ordem.
   function publishLive() {
     if (!DB || typeof fetch !== "function") return;
-    const body = JSON.stringify({slide: SLIDES[index].id, indice: index});
+    const revelacoes = slideElement.querySelectorAll(".reveal").length;
+    const body = JSON.stringify({slide: SLIDES[index].id, indice: index, revelacao: revealCount, revelacoes});
     liveChain = liveChain.then(() => fetch(`${DB}/ao-vivo.json`, {method: "PUT", body})).catch(() => {});
   }
 
@@ -402,6 +389,46 @@
     source.addEventListener("patch", handle("patch"));
   }
 
+  /* ---------- Comandos do celular do apresentador (página /apresentador/) ---------- */
+
+  let lastCommand;
+
+  function runCommand(command) {
+    if (!command || typeof command.id !== "string" || command.id === lastCommand) return;
+    lastCommand = command.id;
+    if (command.acao === "avancar") advance();
+    else if (command.acao === "voltar") goBack();
+    else if (command.acao === "ir") {
+      const target = SLIDES.findIndex(slide => slide.id === command.slide);
+      if (target < 0 || target === index) return;
+      const direction = target > index ? 1 : -1;
+      index = target;
+      render({direction});
+    }
+  }
+
+  function listenCommands() {
+    if (!DB || typeof EventSource !== "function") return;
+    const source = new EventSource(`${DB}/comando.json`);
+    let first = true;
+    source.addEventListener("put", event => {
+      let payload;
+      try {
+        payload = JSON.parse(event.data);
+      } catch {
+        return;
+      }
+      if (!payload || payload.path !== "/") return;
+      // O primeiro evento traz o último comando já executado: só registra, não repete.
+      if (first) {
+        first = false;
+        lastCommand = payload.data?.id;
+        return;
+      }
+      runCommand(payload.data);
+    });
+  }
+
   function updateNavigation() {
     const totalReveals = slideElement.querySelectorAll(".reveal").length;
     previous.disabled = index === 0 && revealCount === 0;
@@ -449,7 +476,6 @@
       fitObserver.observe(slideElement.querySelector(".slide-content"));
     }
     announce(`Slide ${index + 1}: ${slide.title}`);
-    publishState();
     publishLive();
   }
 
@@ -465,7 +491,7 @@
       if (element.dataset.build) build(element.dataset.build);
       updateNavigation();
       announce(element.textContent);
-      publishState();
+      publishLive();
     } else if (index < SLIDES.length - 1) {
       index++;
       render({direction: 1});
@@ -481,36 +507,20 @@
       syncBuild();
       updateNavigation();
       announce("Último conteúdo recolhido.");
-      publishState();
+      publishLive();
     } else if (index > 0) {
       index--;
       render({revealAll: true, direction: -1});
     }
   }
 
-  function publishState() {
-    const message = {workshop: true, type: "state", index, reveal: revealCount, reveals: slideElement.querySelectorAll(".reveal").length};
-    try {
-      if (presenterWindow && !presenterWindow.closed) presenterWindow.postMessage(message, "*");
-    } catch {
-      presenterWindow = null;
-    }
-    channel?.postMessage(message);
-  }
-
-  // Comandos da janela do apresentador: só navegação, nada além disso é aceito.
-  function handlePresenter(data, source) {
-    if (!data || data.workshop !== true) return;
-    if (source && typeof source.postMessage === "function" && source !== window) presenterWindow = source;
-    if (data.type === "hello") publishState();
-    else if (data.type === "next") advance();
-    else if (data.type === "prev") goBack();
-  }
-
+  // Abre a página do apresentador (a mesma que roda no celular). No HTML único, usa a publicada.
   function openPresenter() {
-    const url = `${location.href.split("#")[0].split("?")[0]}?presenter`;
-    presenterWindow = window.open(url, CHANNEL_NAME, "popup,width=1180,height=760");
-    if (!presenterWindow) announce("O navegador bloqueou a janela do apresentador. Permita pop-ups para esta página.");
+    const single = /apresentacao\.html$/.test(location.pathname);
+    const url = single ? linkFor("apresentador") : new URL("apresentador/index.html", location.href.split("#")[0]).href;
+    if (!url || !window.open(url, "apresentador", "popup,width=480,height=860")) {
+      announce("O navegador bloqueou a janela do apresentador. Permita pop-ups para esta página.");
+    }
   }
 
   async function toggleFullscreen() {
@@ -624,123 +634,13 @@
       case "q": case "Q": event.preventDefault(); openQuestions(); break;
     }
   });
-  window.addEventListener("message", event => handlePresenter(event.data, event.source));
-  channel?.addEventListener("message", event => handlePresenter(event.data, null));
   window.addEventListener("resize", fitSlide);
   window.visualViewport?.addEventListener("resize", fitSlide);
   document.fonts?.ready.then(fitSlide);
   window.addEventListener("hashchange", () => {index = indexFromHash(); render({updateHash: false});});
   index = indexFromHash();
   listenQuestions();
+  listenCommands();
   updateQuestions();
   render({updateHash: false});
-
-  /* ---------- Janela do apresentador ---------- */
-
-  function runPresenter() {
-    // Roda antes das constantes da apresentação: não use nada declarado acima.
-    document.title = "Apresentador · Além do Vibecoding";
-    document.documentElement.classList.add("presenter-view");
-    document.body.innerHTML = `
-      <header class="pv-head">
-        <span id="pv-counter">--</span>
-        <span id="pv-chapter"></span>
-        <button id="pv-timer" class="pv-timer" title="Zerar cronômetro (T)" aria-label="Cronômetro. Clique para zerar.">00:00</button>
-      </header>
-      <main class="pv-main">
-        <section class="pv-notes" aria-live="polite">
-          <h1 id="pv-title">Aguardando a apresentação…</h1>
-          <p id="pv-step" class="pv-step"></p>
-          <div id="pv-speech" class="pv-speech"></div>
-          <p id="pv-check" class="pv-check"></p>
-        </section>
-        <aside class="pv-side">
-          <span class="pv-label">A seguir</span>
-          <p id="pv-next" class="pv-next"></p>
-          <p id="pv-status" class="pv-status" role="status"></p>
-          <nav class="pv-nav" aria-label="Controlar a apresentação">
-            <button id="pv-prev" title="Voltar (←)">Voltar</button>
-            <button id="pv-forward" title="Avançar (→ ou Espaço)">Avançar</button>
-          </nav>
-        </aside>
-      </main>`;
-    const $ = selector => document.querySelector(selector);
-    let presenterChannel = null;
-    try {
-      presenterChannel = typeof BroadcastChannel === "function" ? new BroadcastChannel("workshop-presenter") : null;
-    } catch {
-      presenterChannel = null;
-    }
-    const send = type => {
-      const message = {workshop: true, type};
-      if (window.opener && !window.opener.closed) window.opener.postMessage(message, "*");
-      else presenterChannel?.postMessage(message);
-    };
-    const parser = new DOMParser();
-    const revealTexts = SLIDES.map(slide => [...parser.parseFromString(slide.html.replace(/<br\s*\/?>/g, " "), "text/html").querySelectorAll(".reveal")]
-      .map(element => element.textContent.replace(/\s+/g, " ").trim()));
-    let synced = false;
-
-    // Indicações entre colchetes aparecem como marcações de palco.
-    function speech(text) {
-      const target = $("#pv-speech");
-      target.replaceChildren();
-      text.split(/(\[[^\]]+\])/).filter(Boolean).forEach(part => {
-        const cue = part.startsWith("[");
-        const node = document.createElement(cue ? "em" : "span");
-        if (cue) node.className = "pv-cue";
-        node.textContent = cue ? part.slice(1, -1) : part;
-        target.append(node);
-      });
-    }
-
-    function show(state) {
-      const slide = SLIDES[state.index];
-      if (!slide) return;
-      synced = true;
-      $("#pv-status").textContent = "";
-      $("#pv-counter").textContent = `${String(state.index + 1).padStart(2, "0")} / ${SLIDES.length}`;
-      $("#pv-chapter").textContent = slide.chapter;
-      $("#pv-title").textContent = slide.title;
-      $("#pv-step").textContent = state.reveals ? `Revelações: ${state.reveal} de ${state.reveals}` : "";
-      speech(slide.notes || "");
-      $("#pv-check").textContent = slide.check ? `Atenção: ${slide.check}` : "";
-      $("#pv-check").hidden = !slide.check;
-      const pending = revealTexts[state.index][state.reveal];
-      const following = SLIDES[state.index + 1];
-      $("#pv-next").textContent = state.reveal < state.reveals && pending
-        ? `Revelar: ${pending}`
-        : following ? `Slide ${state.index + 2}: ${following.title}` : "Fim da apresentação.";
-      $("#pv-prev").disabled = state.index === 0 && state.reveal === 0;
-      $("#pv-forward").disabled = !following && state.reveal >= state.reveals;
-    }
-
-    const receive = data => {
-      if (data?.workshop === true && data.type === "state") show(data);
-    };
-    window.addEventListener("message", event => receive(event.data));
-    presenterChannel?.addEventListener("message", event => receive(event.data));
-
-    let started = Date.now();
-    const tick = () => {
-      const seconds = Math.floor((Date.now() - started) / 1000);
-      $("#pv-timer").textContent = `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
-    };
-    const resetTimer = () => {started = Date.now(); tick();};
-    setInterval(tick, 1000);
-    $("#pv-timer").addEventListener("click", resetTimer);
-    $("#pv-prev").addEventListener("click", () => send("prev"));
-    $("#pv-forward").addEventListener("click", () => send("next"));
-    document.addEventListener("keydown", event => {
-      if (event.ctrlKey || event.altKey || event.metaKey) return;
-      if ([" ", "Enter"].includes(event.key) && event.target.closest("button")) return;
-      if (["ArrowRight", "PageDown", " "].includes(event.key)) {event.preventDefault(); send("next");}
-      if (["ArrowLeft", "PageUp", "Backspace"].includes(event.key)) {event.preventDefault(); send("prev");}
-      if (event.key === "t" || event.key === "T") resetTimer();
-    });
-    send("hello");
-    setTimeout(() => {
-      if (!synced) $("#pv-status").textContent = "Sem conexão com a apresentação. Abra esta janela pela apresentação, com a tecla N.";
-    }, 1500);
-  }
 })();
