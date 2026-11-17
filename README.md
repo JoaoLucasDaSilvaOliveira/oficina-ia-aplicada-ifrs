@@ -93,7 +93,7 @@ formato certo. Sem login, quem tiver o link pode ler as perguntas ou mudar o
 slide atual; esse risco foi aceito para a oficina.
 
 - **Modo ao vivo:** a cada troca de slide, a apresentação grava o slide atual.
-  O dicionário consulta a cada 2 segundos e segue a apresentação. Navegar,
+  O dicionário consulta a cada 1 segundo e segue a apresentação. Navegar,
   buscar ou trocar de aba desliga o modo; o botão "Ao vivo" religa e volta ao
   slide atual.
 - **Perguntas:** na primeira visita, o dicionário pede o nome do participante

@@ -6,7 +6,8 @@
   const EASE_OUT = "cubic-bezier(0.23, 1, 0.32, 1)";
   const DB = typeof WORKSHOP_LINKS === "object" ? WORKSHOP_LINKS.firebase : "";
   const NAME_KEY = "oficina-ia.nome";
-  const POLL_MS = 2000;
+  // Consulta o slide atual a cada 1s: com ~100 celulares, ~100 leituras pequenas por segundo, dentro do plano gratuito.
+  const POLL_MS = 1000;
   const pad = number => String(number).padStart(2, "0");
   const normalize = text => text.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
 
