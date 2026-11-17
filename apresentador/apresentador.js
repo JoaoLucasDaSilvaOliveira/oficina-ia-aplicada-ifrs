@@ -9,7 +9,7 @@
   const escapeHtml = text => String(text ?? "").replace(/[&<>"']/g, char =>
     ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"})[char]);
   const parser = new DOMParser();
-  const revealTexts = SLIDES.map(slide => [...parser.parseFromString(slide.html.replace(/<br\s*\/?>/g, " "), "text/html")
+  const revealTexts = SLIDES.map(slide => [...parser.parseFromString(slide.html.replace(/<br\s*\/?>/g, " ").replace(/></g, "> <"), "text/html")
     .querySelectorAll(".reveal")].map(element => element.textContent.replace(/\s+/g, " ").trim()));
   let state = null;
 

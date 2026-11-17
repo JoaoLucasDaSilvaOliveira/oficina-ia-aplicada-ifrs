@@ -231,6 +231,12 @@ const noteOf = id => slides.find(slide => slide.id === id).notes;
 assert.match(noteOf("escada"), /Assembly e C/); assert.doesNotMatch(noteOf("escada"), /Fortran/);
 assert.match(noteOf("formulario"), /Coordenações de Curso/);
 assert.match(noteOf("casa"), /^\[Sugestão\]/);
+// Cada revelação do slide tem uma marca [Revele…] na nota, na mesma quantidade.
+slides.forEach(slide => {
+  const reveals = (slide.html.match(/class="[^"]*\breveal\b/g) || []).length;
+  const cues = (slide.notes.match(/\[Revel[ae][^\]]*\]/g) || []).length;
+  assert.equal(cues, reveals, `${slide.id}: ${reveals} revelações e ${cues} marcas na nota`);
+});
 assert.doesNotMatch(noteOf("decisao"), /^\[Sugestão\]/);
 
 // Geometria simulada: escala uniforme preserva o conteúdo nas duas dimensões.
